@@ -1,0 +1,391 @@
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="header-container">
+    <a class="brand" href="#inicio" aria-label="Ir al inicio" (click)="closeMenu()">
+      <span>DROGZ</span>
+      <strong>DEV</strong>
+    </a>
+
+    <button
+      class="menu-button"
+      type="button"
+      [attr.aria-label]="menuOpen() ? 'Cerrar menú' : 'Abrir menú'"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="main-navigation"
+      (click)="toggleMenu()"
+    >
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav
+      id="main-navigation"
+      class="navigation"
+      aria-label="Navegación principal"
+      [class.is-open]="menuOpen()"
+    >
+      <a href="#proyectos" (click)="closeMenu()">Proyectos</a>
+      <a href="#capacidades" (click)="closeMenu()">Stack</a>
+      <a href="#sobre-mi" (click)="closeMenu()">Sobre mí</a>
+      <a href="#contacto" (click)="closeMenu()">Contacto</a>
+      <a class="navigation-cv" [href]="cvUrl" target="_blank" rel="noreferrer" (click)="closeMenu()">Descargar CV</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido" class="page">
+  <!-- HERO -->
+  <section id="inicio" class="hero section-container">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span class="eyebrow-dot" aria-hidden="true"></span>
+        Full Stack Developer
+      </div>
+      <h1>Interfaces claras. <span>Sistemas completos.</span></h1>
+      <p class="hero-description">
+        Construyo aplicaciones con Angular y Django para transformar datos, inventario, ventas y alertas en productos que las personas realmente pueden utilizar.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#proyectos">Ver proyectos <span aria-hidden="true">↓</span></a>
+        <a class="button button-secondary" [href]="cvUrl" target="_blank" rel="noreferrer">Descargar CV <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-meta">
+        <div><strong>Datos en tiempo real</strong><span>Alertas e históricos</span></div>
+        <div><strong>Automatización</strong><span>Redis y Celery</span></div>
+        <div><strong>Desarrollo end‑to‑end</strong><span>Angular y Django</span></div>
+      </div>
+    </div>
+
+    <!-- EASTER EGG -->
+    @let showPortrait = portraitVisible();
+    <div
+      class="hero-visual hero-visual-toggle"
+      role="button"
+      tabindex="0"
+      [attr.aria-pressed]="showPortrait"
+      [attr.aria-label]="showPortrait ? 'Volver a mostrar el código' : 'Ejecutar el código y mostrar el retrato'"
+      (click)="toggleHeroVisual()"
+      (keydown)="handleHeroVisualKeydown($event)"
+    >
+      <div class="visual-header">
+        <div class="window-controls" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="visual-file">{{ showPortrait ? 'developer.rendered.png' : 'portfolio.config.ts' }}</span>
+        <span class="visual-action">{{ showPortrait ? 'Ver código ↺' : 'Ejecutar ↗' }}</span>
+      </div>
+
+      @if (!showPortrait) {
+        <div class="hero-visual-content hero-code-view">
+          <div class="code-line">
+            <span class="line-number">01</span>
+            <span class="code-keyword">const</span>
+            <span class="code-property">developer</span>
+            <span>= &#123;</span>
+          </div>
+          <div class="code-line code-indent">
+            <span class="line-number">02</span>
+            <span class="code-property">name:</span>
+            <span class="code-string">'Miguel Luna'</span>
+          </div>
+          <div class="code-line code-indent">
+            <span class="line-number">03</span>
+            <span class="code-property">role:</span>
+            <span class="code-string">'Full Stack Developer'</span>
+          </div>
+          <div class="code-line code-indent">
+            <span class="line-number">04</span>
+            <span class="code-property">stack:</span>
+            <span class="code-string">['Angular', 'Django', 'Python']</span>
+          </div>
+          <div class="code-line code-indent">
+            <span class="line-number">05</span>
+            <span class="code-property">portrait:</span>
+            <span class="code-string">'/user.png'</span>
+          </div>
+          <div class="code-line">
+            <span class="line-number">06</span>
+            <span>&#125;;</span>
+          </div>
+          <div class="code-line code-execute-line">
+            <span class="line-number">07</span>
+            <span class="code-property">developer</span>
+            <span class="code-method">.render()</span>
+            <span>;</span>
+          </div>
+        </div>
+      } @else {
+        <div class="hero-visual-content hero-portrait-view">
+          <div class="hero-portrait-glow" aria-hidden="true"></div>
+          <div class="hero-portrait-frame">
+            <img
+              class="hero-portrait-image"
+              src="/yoldan.png"
+              alt="Retrato de Miguel Luna, desarrollador Full Stack"
+              width="1000"
+              height="1250"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <div class="hero-portrait-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="hero-render-badge">
+            <span class="status-indicator" aria-hidden="true"></span>
+            Build successful
+          </div>
+          <div class="hero-portrait-caption">
+            <div>
+              <span>Developer rendered</span>
+              <strong>Miguel Luna</strong>
+            </div>
+            <span class="portrait-index">01 / 01</span>
+          </div>
+        </div>
+      }
+
+      <div class="visual-status" aria-live="polite">
+        <span class="status-indicator" aria-hidden="true"></span>
+        <span>{{ showPortrait ? 'Render completado. Haz clic para volver.' : 'Haz clic para ejecutar el perfil.' }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section class="tech-marquee" aria-label="Tecnologías principales">
+    <div class="tech-track">
+      @for (group of [marqueeSkills, marqueeSkills]; track $index) {
+        <div class="tech-group" [attr.aria-hidden]="$index === 1">
+          @for (skill of group; track skill) {
+            <span class="tech-item">{{ skill }}<i aria-hidden="true"></i></span>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro section-container">
+    <p class="section-label">Perfil</p>
+    <div class="intro-content">
+      <h2>Ideas convertidas en productos funcionales.</h2>
+      <p>Me especializo en construir aplicaciones completas con interfaces modernas, APIs estructuradas, automatizaciones y datos actualizados en tiempo real.</p>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos" class="projects section-container">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Trabajo seleccionado</p>
+        <h2>Proyectos reales</h2>
+      </div>
+      <p>Productos en los que trabajé tanto la experiencia visual como la arquitectura, la lógica del sistema y su infraestructura.</p>
+    </div>
+
+    <div class="projects-list">
+      @for (project of projects; track project.slug) {
+        <article class="project-card">
+          <div class="project-media">
+            <div class="project-media-header">
+              <span>{{ project.number }}</span>
+              <span>{{ project.category }}</span>
+            </div>
+
+            @if (project.gallery; as gallery) {
+              <div
+                class="project-gallery"
+                role="region"
+                tabindex="0"
+                aria-roledescription="carrusel"
+                [attr.aria-label]="'Galería de ' + project.title"
+                (mouseenter)="pauseGallery(project.slug)"
+                (mouseleave)="resumeGallery(project.slug, gallery.length)"
+                (keydown)="handleGalleryKeydown($event, project.slug, gallery.length)"
+              >
+                <div class="project-gallery-stage" aria-live="polite">
+                  @for (image of gallery; track image.src; let imageIndex = $index) {
+                    <figure
+                      class="project-gallery-slide"
+                      [class.is-active]="imageIndex === getGalleryIndex(project.slug)"
+                      [attr.aria-hidden]="imageIndex !== getGalleryIndex(project.slug)"
+                    >
+                      <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
+                      <figcaption class="project-gallery-caption">
+                        <span>{{ image.number }}</span>
+                        <strong>{{ image.label }}</strong>
+                      </figcaption>
+                    </figure>
+                  }
+                </div>
+
+                <button
+                  class="project-gallery-arrow project-gallery-arrow-left"
+                  type="button"
+                  aria-label="Mostrar imagen anterior"
+                  (click)="previousGallery(project.slug, gallery.length, $event)"
+                >
+                  <span aria-hidden="true">←</span>
+                </button>
+                <button
+                  class="project-gallery-arrow project-gallery-arrow-right"
+                  type="button"
+                  aria-label="Mostrar imagen siguiente"
+                  (click)="nextGallery(project.slug, gallery.length, $event)"
+                >
+                  <span aria-hidden="true">→</span>
+                </button>
+
+                <div class="project-gallery-dots" aria-label="Seleccionar imagen">
+                  @for (image of gallery; track image.src; let imageIndex = $index) {
+                    <button
+                      type="button"
+                      [class.is-active]="imageIndex === getGalleryIndex(project.slug)"
+                      [attr.aria-label]="'Mostrar ' + image.label"
+                      [attr.aria-current]="imageIndex === getGalleryIndex(project.slug) ? 'true' : null"
+                      (click)="selectGalleryImage(project.slug, imageIndex, gallery.length, $event)"
+                    ></button>
+                  }
+                </div>
+
+                <div class="project-gallery-counter" aria-live="polite">
+                  <span>{{ getGalleryIndex(project.slug) + 1 }}</span>
+                  <i aria-hidden="true"></i>
+                  <span>{{ gallery.length }}</span>
+                </div>
+              </div>
+            } @else {
+              <img class="project-single-image" [src]="project.image" [alt]="project.imageAlt" loading="lazy" width="1600" height="1000" />
+            }
+          </div>
+
+          <div class="project-content">
+            <div class="project-title-row">
+              <div>
+                <span class="project-category">{{ project.category }}</span>
+                <h3>{{ project.title }}</h3>
+              </div>
+              <span class="project-number">{{ project.number }}</span>
+            </div>
+            <p class="project-summary">{{ project.summary }}</p>
+            <p class="project-description">{{ project.description }}</p>
+            <div class="project-details">
+              <div>
+                <span class="detail-label">Reto</span>
+                <p>{{ project.challenge }}</p>
+              </div>
+              <div>
+                <span class="detail-label">Funciones</span>
+                <ul>
+                  @for (feature of project.features; track feature) {
+                    <li>{{ feature }}</li>
+                  }
+                </ul>
+              </div>
+            </div>
+            <div class="technology-list" aria-label="Tecnologías utilizadas">
+              @for (technology of project.technologies; track technology) {
+                <span>{{ technology }}</span>
+              }
+            </div>
+            <div class="project-links">
+              @for (link of project.links; track link.url) {
+                <a [href]="link.url" target="_blank" rel="noreferrer">
+                  {{ link.label }} <span aria-hidden="true">↗</span>
+                </a>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- CAPACIDADES -->
+  <section id="capacidades" class="capabilities">
+    <div class="section-container">
+      <div class="section-heading section-heading-light">
+        <div>
+          <p class="section-label">Capacidades</p>
+          <h2>Del frontend al despliegue.</h2>
+        </div>
+        <p>Puedo trabajar un producto como un sistema completo, no solamente como una colección de pantallas independientes.</p>
+      </div>
+
+      <div class="capabilities-grid">
+        @for (capability of capabilities; track capability.number) {
+          <article class="capability-card">
+            <span class="capability-number">{{ capability.number }}</span>
+            <h3>{{ capability.title }}</h3>
+            <p>{{ capability.description }}</p>
+            <div class="capability-technologies">
+              @for (technology of capability.technologies; track technology) {
+                <span>{{ technology }}</span>
+              }
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="workflow section-container">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Proceso</p>
+        <h2>Cómo construyo</h2>
+      </div>
+      <p>Un proceso directo para evitar desarrollar funciones que no resuelvan el problema real.</p>
+    </div>
+
+    <div class="workflow-list">
+      @for (step of workflow; track step.number) {
+        <article class="workflow-item">
+          <span>{{ step.number }}</span>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- SOBRE MÍ -->
+  <section id="sobre-mi" class="about section-container">
+    <div class="about-heading">
+      <p class="section-label">Sobre mí</p>
+      <h2>Desarrollo con mentalidad de producto.</h2>
+    </div>
+
+    <div class="about-content">
+      <p class="about-lead">Soy Miguel, desarrollador Full Stack especializado en Angular, Django y Python.</p>
+      <div class="about-copy">
+        <p>Me gusta entender cómo funciona un negocio antes de comenzar a escribir código. Eso me permite crear interfaces y sistemas que resuelven tareas reales y no solamente se ven bien.</p>
+        <p>He trabajado con dashboards, inventario, facturación, datos financieros, tareas programadas, notificaciones y aplicaciones conectadas a diferentes APIs.</p>
+        <p>Mi enfoque combina diseño de interfaces, arquitectura frontend, desarrollo backend y despliegue para mantener una visión completa del producto.</p>
+        <a [href]="githubUrl" target="_blank" rel="noreferrer">
+          Ver perfil de GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="contact">
+    <div class="section-container contact-container">
+      <p class="section-label">Contacto</p>
+      <h2>¿Tienes una idea que necesita convertirse en producto?</h2>
+      <p>Podemos hablar sobre el proyecto, sus necesidades y la mejor manera de construir una primera versión funcional.</p>
+      <a class="contact-link" [href]="'mailto:' + email">{{ email }} <span aria-hidden="true">↗</span></a>
+
+      <div class="contact-footer">
+        <span>© {{ currentYear }} Miguel Luna</span>
+        <div>
+          <a [href]="githubUrl" target="_blank" rel="noreferrer">GitHub</a>
+          <a [href]="cvUrl" target="_blank" rel="noreferrer">CV</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
