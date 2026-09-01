@@ -140,6 +140,16 @@ export const PROJECTS: PortfolioProject[] = [
 
     links: [
       {
+        label: 'Ver demo',
+        url: 'https://demo.noctesystems.online/',
+        type: 'live'
+      },
+      {
+        label: 'Repositorio demo',
+        url: 'https://github.com/DrogzDev/Tienda-Demo',
+        type: 'repository'
+      },
+      {
         label: 'Ver repositorio',
         url: 'https://github.com/DrogzDev/Tienda',
         type: 'repository'
