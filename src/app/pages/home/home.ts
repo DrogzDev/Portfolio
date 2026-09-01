@@ -282,28 +282,46 @@ export class HomeComponent {
   // ---- Animaciones GSAP ----
   private initializeAnimations(): void {
     const root = this.host.nativeElement;
+    ScrollTrigger.config({ ignoreMobileResize: true });
     this.mediaContext = gsap.matchMedia();
     this.mediaContext.add(
       { desktop: '(min-width: 801px)', reduceMotion: '(prefers-reduced-motion: reduce)' },
       (media) => {
         if (media.conditions?.['reduceMotion']) return;
 
+        const desktop = !!media.conditions?.['desktop'];
         const ctx = gsap.context(() => {
+          // Above-the-fold: corre de inmediato para que la entrada del hero
+          // no compita por el hilo principal con el resto de la página.
           this.animateScrollProgress();
-          this.animateHero();
+          this.animateHero(desktop);
           this.animateMarquee();
-          this.animateSections();
-          this.animateProjects(!!media.conditions?.['desktop']);
-          this.animateCapabilities();
-          this.animateWorkflow();
-          this.animateContact();
-          if (!!media.conditions?.['desktop']) this.animateDesktopParallax();
-          requestAnimationFrame(() => ScrollTrigger.refresh());
+
+          // Below-the-fold: se difiere para no robarle frames a la animación
+          // del hero en dispositivos lentos (móviles de gama media/baja).
+          this.scheduleIdle(() => {
+            this.animateSections();
+            this.animateProjects(desktop);
+            this.animateCapabilities();
+            this.animateWorkflow();
+            this.animateContact();
+            if (desktop) this.animateDesktopParallax();
+            requestAnimationFrame(() => ScrollTrigger.refresh());
+          });
         }, root);
 
         return () => ctx.revert();
       }
     );
+  }
+
+  private scheduleIdle(callback: () => void): void {
+    const w = window as unknown as { requestIdleCallback?: (cb: () => void) => number };
+    if (typeof w.requestIdleCallback === 'function') {
+      w.requestIdleCallback(callback);
+    } else {
+      setTimeout(callback, 120);
+    }
   }
 
   private animateScrollProgress(): void {
@@ -314,7 +332,9 @@ export class HomeComponent {
     });
   }
 
-  private animateHero(): void {
+  private animateHero(desktop: boolean): void {
+    document.documentElement.classList.remove('gsap-hero-pending');
+
     const root = this.host.nativeElement;
     const header = root.querySelector<HTMLElement>('.site-header');
     const copyElements = root.querySelectorAll<HTMLElement>(
@@ -329,7 +349,10 @@ export class HomeComponent {
 
     gsap.set(header, { y: -40, autoAlpha: 0 });
     gsap.set(copyElements, { y: 34, autoAlpha: 0 });
-    gsap.set(visual, { autoAlpha: 0, filter: 'blur(12px)' });
+    // El filtro blur es carísimo de componer en CPUs móviles y es la causa
+    // principal de que la entrada del hero se sienta como un salto en vez de
+    // una animación en gama baja/media: en mobile solo se anima posición/opacidad.
+    gsap.set(visual, desktop ? { autoAlpha: 0, filter: 'blur(12px)' } : { autoAlpha: 0, y: 16 });
     gsap.set(visualElements, { y: 18, autoAlpha: 0 });
 
     gsap.timeline({ defaults: { ease: 'power3.out' } })
@@ -340,19 +363,17 @@ export class HomeComponent {
         stagger: 0.09,
         duration: 0.72
       }, 0.18)
-      .to(visual, {
-        autoAlpha: 1,
-        filter: 'blur(0px)',
-        duration: 1.05,
-        ease: 'power2.out'
-      }, 0.28)
+      .to(visual, desktop
+        ? { autoAlpha: 1, filter: 'blur(0px)', duration: 1.05, ease: 'power2.out' }
+        : { autoAlpha: 1, y: 0, duration: 0.62, ease: 'power2.out' }
+      , 0.28)
       .to(visualElements, {
         y: 0,
         autoAlpha: 1,
         stagger: 0.1,
         duration: 0.62
       }, 0.48)
-      .set(visual, { clearProps: 'filter' });
+      .set(visual, { clearProps: desktop ? 'filter' : 'transform' });
   }
 
   private animateMarquee(): void {

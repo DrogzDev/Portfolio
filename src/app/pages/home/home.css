@@ -1545,6 +1545,24 @@ button:focus-visible,
     flex-direction: column;
     gap: 2rem;
   }
+
+  /* backdrop-filter es muy costoso de componer en CPUs móviles y frena el
+     hilo principal justo cuando corren las animaciones de entrada; en mobile
+     se cambia por fondos más opacos que dan el mismo efecto visual sin blur. */
+  .site-header {
+    background: var(--background);
+    backdrop-filter: none;
+  }
+  .hero-render-badge,
+  .hero-portrait-caption,
+  .project-media-header span,
+  .project-gallery-caption span,
+  .project-gallery-caption strong,
+  .project-gallery-counter,
+  .project-gallery-arrow {
+    background: #111111;
+    backdrop-filter: none;
+  }
 }
 
 @media (max-width: 540px) {

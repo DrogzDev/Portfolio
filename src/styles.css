@@ -24,3 +24,12 @@ select {
   color: #111111;
   background: #d7ff3f;
 }
+
+/* Ver script inline en index.html: oculta el hero antes del primer pintado
+   para evitar el parpadeo de "contenido visible -> oculto -> reanimado" en
+   dispositivos donde la hidratación de Angular/GSAP tarda más. */
+html.gsap-hero-pending .site-header,
+html.gsap-hero-pending .hero-copy > *,
+html.gsap-hero-pending .hero-visual {
+  opacity: 0;
+}

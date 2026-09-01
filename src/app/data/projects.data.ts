@@ -145,5 +145,74 @@ export const PROJECTS: PortfolioProject[] = [
         type: 'repository'
       }
     ]
+  },
+
+  {
+    slug: 'inventario-ministerio',
+    number: '03',
+    title: 'Inventario Ministerio',
+    category: 'Sistema institucional · Gestión de inventario',
+
+    summary:
+      'Sistema de inventario para el Ministerio del Poder Popular para Hábitat y Vivienda, con carga masiva por Excel, control de existencias y roles por cargo.',
+
+    description:
+      'Plataforma full stack desarrollada para el Ministerio del Poder Popular para Hábitat y Vivienda que centraliza el control de inventario institucional: productos por categoría y almacén, entradas y salidas, hojas de ruta, notas de entrega e informes de gestión. Incluye carga masiva desde Excel con revisión asistida antes de confirmar cualquier cambio de stock, historial de movimientos y permisos diferenciados por rol (Administrador, Director, Almacenista). Por tratarse de un proyecto privado del ministerio, la demostración en vivo se realiza de forma presencial.',
+
+    challenge:
+      'Permitir que varios cargos (Administrador, Director, Almacenista) operen el mismo inventario con permisos distintos, y procesar cargas masivas de Excel sin arriesgar el stock real: cada importación se revisa antes de confirmarse, decidiendo producto por producto si crea uno nuevo o suma cantidad a uno existente.',
+
+    technologies: [
+      'Angular',
+      'TypeScript',
+      'Python',
+      'Django',
+      'Django REST Framework',
+      'JWT',
+      'SQLite',
+      'Docker'
+    ],
+
+    features: [
+      'Inventario por categoría, almacén y sección',
+      'Carga masiva desde Excel con revisión antes de confirmar',
+      'Carga por lotes y registro manual de productos',
+      'Historial de movimientos y existencias',
+      'Hojas de ruta y notas de entrega',
+      'Informes de gestión y reportes',
+      'Roles y permisos por cargo (Administrador, Director, Almacenista)',
+      'Modo oscuro'
+    ],
+
+    image: '/ministerio-inventario.png',
+
+    imageAlt:
+      'Panel de inventario del sistema del Ministerio de Hábitat y Vivienda',
+
+    gallery: [
+      {
+        number: '01',
+        label: 'Inventario',
+        src: '/ministerio-inventario.png',
+        alt:
+          'Listado de inventario con existencias y estado de stock'
+      },
+      {
+        number: '02',
+        label: 'Carga por Excel',
+        src: '/ministerio-excel.png',
+        alt:
+          'Pantalla de carga masiva de inventario desde archivo Excel'
+      },
+      {
+        number: '03',
+        label: 'Modo oscuro',
+        src: '/ministerio-darkmode.png',
+        alt:
+          'Inventario del sistema institucional en modo oscuro'
+      }
+    ],
+
+    links: []
   }
 ];

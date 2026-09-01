@@ -5,7 +5,27 @@
   <title>DrogzdevPortfolio</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <script>
+    // Oculta el hero antes del primer pintado para que la animación de
+    // entrada de GSAP no tenga que "esconder" contenido ya visible en
+    // dispositivos donde la hidratación tarda (evita el parpadeo en mobile).
+    (function () {
+      try {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var html = document.documentElement;
+          html.classList.add('gsap-hero-pending');
+          // Salvaguarda: si la hidratación/GSAP no arranca a tiempo, revela
+          // el contenido de todos modos en vez de dejarlo invisible.
+          setTimeout(function () { html.classList.remove('gsap-hero-pending'); }, 1500);
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
