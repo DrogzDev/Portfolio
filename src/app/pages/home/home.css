@@ -191,19 +191,12 @@ img {
   align-items: center;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 90px -12vw 0;
-  z-index: -2;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(18, 18, 18, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(18, 18, 18, 0.055) 1px, transparent 1px);
-  background-size: 52px 52px;
-  mask-image: linear-gradient(to bottom, transparent, #000 20%, #000 70%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 20%, #000 70%, transparent);
-}
+/* La malla del hero (antes un ::before estático) ahora es un <canvas>
+   creado e insertado por JS (ver initializeHeroGridCanvas en home.ts), no
+   declarado en el template: así nunca pasa por hidratación de SSR. Por la
+   misma razón, sus estilos de posicionamiento se aplican inline desde TS en
+   vez de aquí — al no venir del template, no recibe el atributo de scope
+   de Angular y estas reglas nunca lo alcanzarían. */
 
 .hero::after {
   content: "";
@@ -364,6 +357,8 @@ img {
 }
 
 .visual-header {
+  position: relative;
+  z-index: 2;
   min-height: 58px;
   padding: 0 1.2rem;
   display: flex;
@@ -372,6 +367,30 @@ img {
   color: rgba(255, 255, 255, 0.55);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.75rem;
+}
+
+/* Spotlight que sigue el cursor (solo se anima con JS en dispositivos con
+   mouse real; el gate por (hover: hover) evita que quede "pegado" visible
+   tras un tap en móvil). */
+.hero-visual-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 320px;
+  height: 320px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(215, 255, 63, 0.32), transparent 70%);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-visual-toggle:hover .hero-visual-spotlight,
+  .hero-visual-toggle:focus-visible .hero-visual-spotlight {
+    opacity: 1;
+  }
 }
 
 .window-controls {
@@ -407,6 +426,7 @@ img {
 
 .hero-visual-content {
   position: relative;
+  z-index: 2;
   width: 100%;
   overflow: hidden;
   will-change: height, transform, opacity, clip-path;
@@ -461,6 +481,8 @@ img {
 }
 
 .visual-status {
+  position: relative;
+  z-index: 2;
   min-height: 64px;
   padding: 0 1.3rem;
   display: flex;
@@ -986,6 +1008,226 @@ img {
   background: rgba(255, 255, 255, 0.45);
 }
 
+/* Botón invisible que envuelve cada imagen para abrir el lightbox */
+.project-media-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+}
+
+.project-media-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0);
+  transition: background 220ms ease;
+  pointer-events: none;
+}
+
+.project-media-frame:hover::after,
+.project-media-frame:focus-visible::after {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.project-media-zoom-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 6;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: rgba(17, 17, 17, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  font-size: 1.2rem;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition: opacity 220ms ease, transform 220ms ease;
+  pointer-events: none;
+}
+
+.project-media-frame:hover .project-media-zoom-hint,
+.project-media-frame:focus-visible .project-media-zoom-hint {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Lightbox */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(10, 10, 10, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 1100px);
+  max-height: 90vh;
+  overflow: hidden;
+  background: var(--dark);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 4;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.lightbox-close:hover {
+  color: var(--dark);
+  background: var(--accent);
+  transform: scale(1.06);
+}
+
+.lightbox-stage {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  background: #0a0a0a;
+}
+
+.lightbox-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: calc(90vh - 96px);
+  object-fit: contain;
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: rgba(17, 17, 17, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.lightbox-nav:hover {
+  color: var(--dark);
+  background: var(--accent);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.lightbox-nav-prev {
+  left: 1rem;
+}
+
+.lightbox-nav-next {
+  right: 1rem;
+}
+
+.lightbox-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.4rem;
+  background: var(--dark);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-caption {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  min-width: 0;
+  color: var(--dark-text);
+}
+
+.lightbox-caption span {
+  padding: 0.3rem 0.55rem;
+  color: rgba(247, 247, 242, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+}
+
+.lightbox-caption strong {
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lightbox-counter {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.4rem;
+  align-items: center;
+  color: rgba(247, 247, 242, 0.7);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.lightbox-counter i {
+  width: 12px;
+  height: 1px;
+  background: rgba(247, 247, 242, 0.4);
+}
+
+@media (max-width: 540px) {
+  .lightbox-overlay {
+    padding: 0.75rem;
+  }
+  .lightbox-nav {
+    width: 40px;
+    height: 40px;
+  }
+  .lightbox-caption strong {
+    max-width: 40vw;
+  }
+}
+
 .project-content {
   padding-top: 0.5rem;
 }
@@ -1485,9 +1727,6 @@ button:focus-visible,
   .hero::after {
     top: 28%;
     right: -45%;
-  }
-  .hero::before {
-    inset-inline: -2rem;
   }
   .hero-visual {
     --hero-code-height: 390px;

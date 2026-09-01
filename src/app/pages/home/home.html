@@ -69,6 +69,8 @@
       (click)="toggleHeroVisual()"
       (keydown)="handleHeroVisualKeydown($event)"
     >
+      <div class="hero-visual-spotlight" aria-hidden="true"></div>
+
       <div class="visual-header">
         <div class="window-controls" aria-hidden="true">
           <span></span><span></span><span></span>
@@ -211,7 +213,15 @@
                       [class.is-active]="imageIndex === getGalleryIndex(project.slug)"
                       [attr.aria-hidden]="imageIndex !== getGalleryIndex(project.slug)"
                     >
-                      <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
+                      <button
+                        type="button"
+                        class="project-media-frame"
+                        [attr.aria-label]="'Ver imagen en grande: ' + image.label"
+                        (click)="openLightbox(project, imageIndex)"
+                      >
+                        <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
+                        <span class="project-media-zoom-hint" aria-hidden="true">⤢</span>
+                      </button>
                       <figcaption class="project-gallery-caption">
                         <span>{{ image.number }}</span>
                         <strong>{{ image.label }}</strong>
@@ -256,7 +266,15 @@
                 </div>
               </div>
             } @else {
-              <img class="project-single-image" [src]="project.image" [alt]="project.imageAlt" loading="lazy" width="1600" height="1000" />
+              <button
+                type="button"
+                class="project-media-frame"
+                aria-label="Ver imagen en grande"
+                (click)="openLightbox(project, 0)"
+              >
+                <img class="project-single-image" [src]="project.image" [alt]="project.imageAlt" loading="lazy" width="1600" height="1000" />
+                <span class="project-media-zoom-hint" aria-hidden="true">⤢</span>
+              </button>
             }
           </div>
 
@@ -389,3 +407,60 @@
     </div>
   </section>
 </main>
+
+@if (lightbox(); as box) {
+  <div
+    class="lightbox-overlay"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'Galería de ' + box.title"
+    (click)="closeLightbox()"
+  >
+    <div class="lightbox-panel" tabindex="-1" (click)="$event.stopPropagation()">
+      <button type="button" class="lightbox-close" aria-label="Cerrar" (click)="closeLightbox()">
+        <span aria-hidden="true">✕</span>
+      </button>
+
+      <div class="lightbox-stage">
+        @if (box.images.length > 1) {
+          <button
+            type="button"
+            class="lightbox-nav lightbox-nav-prev"
+            aria-label="Imagen anterior"
+            (click)="lightboxPrevious()"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+        }
+
+        <img class="lightbox-image" [src]="box.images[box.index].src" [alt]="box.images[box.index].alt" />
+
+        @if (box.images.length > 1) {
+          <button
+            type="button"
+            class="lightbox-nav lightbox-nav-next"
+            aria-label="Imagen siguiente"
+            (click)="lightboxNext()"
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        }
+      </div>
+
+      <div class="lightbox-footer">
+        <div class="lightbox-caption">
+          <span>{{ box.images[box.index].number }}</span>
+          <strong>{{ box.images[box.index].label }}</strong>
+        </div>
+
+        @if (box.images.length > 1) {
+          <div class="lightbox-counter" aria-live="polite">
+            <span>{{ box.index + 1 }}</span>
+            <i aria-hidden="true"></i>
+            <span>{{ box.images.length }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

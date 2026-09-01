@@ -33,3 +33,9 @@ html.gsap-hero-pending .hero-copy > *,
 html.gsap-hero-pending .hero-visual {
   opacity: 0;
 }
+
+/* Bloquea el scroll de la página mientras el lightbox de fotos está abierto. */
+html.lightbox-open,
+html.lightbox-open body {
+  overflow: hidden;
+}
