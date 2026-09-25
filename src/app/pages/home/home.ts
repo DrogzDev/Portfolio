@@ -13,13 +13,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from '../../data/projects.data';
 import { PortfolioProject, ProjectLink } from '../../core/models/project.model';
 import { SeoService } from '../../core/services/seo.service';
+import { ProjectGalleryComponent } from '../../shared/project-gallery/project-gallery';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ProjectGalleryComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -267,7 +268,7 @@ export class HomeComponent {
           // del hero en dispositivos lentos (móviles de gama media/baja).
           this.scheduleIdle(() => {
             this.animateSections();
-            this.animateProjects(desktop);
+            this.animateProjects();
             this.animateCapabilities();
             this.animateWorkflow();
             this.animateContact();
@@ -457,12 +458,11 @@ export class HomeComponent {
     });
   }
 
-  private animateProjects(desktop: boolean): void {
+  private animateProjects(): void {
     const cards = gsap.utils.toArray<HTMLElement>('.project-card');
     cards.forEach(card => {
       const media = card.querySelector<HTMLElement>('.project-media');
       const content = card.querySelector<HTMLElement>('.project-content');
-      const singleImage = card.querySelector<HTMLImageElement>('.project-single-image');
 
       if (media) {
         gsap.from(media, {
@@ -474,14 +474,6 @@ export class HomeComponent {
         gsap.from(Array.from(content.children), {
           y: 34, autoAlpha: 0, stagger: 0.08, duration: 0.7, ease: 'power3.out',
           scrollTrigger: { trigger: card, start: 'top 72%', once: true }
-        });
-      }
-      if (singleImage && desktop) {
-        // Parallax muy sutil: antes iba de 112% a 100% de escala (demasiado
-        // agresivo para una screenshot de UI, recortaba contenido visible).
-        gsap.fromTo(singleImage, { scale: 1.035, yPercent: -1.2 }, {
-          scale: 1, yPercent: 1.2, ease: 'none',
-          scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 0.8 }
         });
       }
     });
