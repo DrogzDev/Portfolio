@@ -315,13 +315,6 @@ export const PROJECTS: PortfolioProject[] = [
       },
       {
         number: '02',
-        label: 'Marca',
-        src: '/careperro-historia.jpg',
-        alt:
-          'Franja de highlights y sección de historia de marca de Care Perro’s House'
-      },
-      {
-        number: '03',
         label: 'Ubicación',
         src: '/careperro-ubicacion.jpg',
         alt:
