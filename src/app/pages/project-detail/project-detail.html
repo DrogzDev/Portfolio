@@ -1,0 +1,46 @@
+@if (project(); as project) {
+  <a class="skip-link" href="#detalle">Saltar al contenido</a>
+
+  <div class="project-detail-nav section-container">
+    <a class="back-link" routerLink="/">
+      <span aria-hidden="true">←</span> Volver al inicio
+    </a>
+  </div>
+
+  <main id="detalle" class="section-container">
+    <app-project-hero [project]="project" />
+
+    <div class="project-detail-body">
+      <app-project-overview [description]="project.description" />
+      <app-challenge-section [challenge]="project.challenge" />
+      <app-architecture-diagram [architecture]="project.architecture" [projectTitle]="project.title" />
+      <app-project-decisions [decisions]="project.decisions" />
+      <app-feature-grid [features]="project.features" />
+      <app-tech-stack [technologies]="project.technologies" />
+
+      @if (project.results; as results) {
+        <section class="detail-section">
+          <h2>Resultado</h2>
+          <ul class="results-list">
+            @for (result of results; track result) {
+              <li>{{ result }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (project.gallery; as gallery) {
+        <section class="detail-section">
+          <h2>Galería</h2>
+          <app-project-gallery [images]="gallery" [title]="project.title" />
+        </section>
+      }
+    </div>
+  </main>
+} @else {
+  <div class="project-not-found section-container">
+    <h1>Proyecto no encontrado</h1>
+    <p>El proyecto que buscas no existe o fue movido.</p>
+    <a routerLink="/">Volver al inicio</a>
+  </div>
+}

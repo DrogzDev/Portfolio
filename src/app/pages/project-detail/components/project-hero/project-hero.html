@@ -1,0 +1,30 @@
+<header class="project-hero">
+  <p class="project-hero-eyebrow">
+    <span class="project-hero-number">{{ project().number }}</span>
+    <span class="project-hero-category">{{ project().category }}</span>
+    <span class="status-pill" [attr.data-status]="project().status">{{ statusLabel(project().status) }}</span>
+  </p>
+
+  <h1>{{ project().title }}</h1>
+
+  <p class="project-hero-summary">{{ project().summary }}</p>
+  <p class="project-hero-role"><strong>Mi rol:</strong> {{ project().role }}</p>
+
+  <div class="project-hero-stack" aria-label="Tecnologías principales">
+    @for (technology of project().primaryTechnologies; track technology) {
+      <span>{{ technology }}</span>
+    }
+  </div>
+
+  <app-project-links [links]="project().links" [linksNote]="project().linksNote" />
+
+  <img
+    class="project-hero-image"
+    [src]="project().image"
+    [alt]="project().imageAlt"
+    width="1600"
+    height="1000"
+    loading="eager"
+    fetchpriority="high"
+  />
+</header>

@@ -189,94 +189,17 @@
     <div class="projects-list">
       @for (project of projects; track project.slug) {
         <article class="project-card">
-          <div class="project-media">
+          <a
+            class="project-media"
+            [routerLink]="['/projects', project.slug]"
+            [attr.aria-label]="'Ver caso de estudio: ' + project.title"
+          >
             <div class="project-media-header">
               <span>{{ project.number }}</span>
               <span>{{ project.category }}</span>
             </div>
-
-            @if (project.gallery; as gallery) {
-              <div
-                class="project-gallery"
-                role="region"
-                tabindex="0"
-                aria-roledescription="carrusel"
-                [attr.aria-label]="'Galería de ' + project.title"
-                (mouseenter)="pauseGallery(project.slug)"
-                (mouseleave)="resumeGallery(project.slug, gallery.length)"
-                (keydown)="handleGalleryKeydown($event, project.slug, gallery.length)"
-              >
-                <div class="project-gallery-stage" aria-live="polite">
-                  @for (image of gallery; track image.src; let imageIndex = $index) {
-                    <figure
-                      class="project-gallery-slide"
-                      [class.is-active]="imageIndex === getGalleryIndex(project.slug)"
-                      [attr.aria-hidden]="imageIndex !== getGalleryIndex(project.slug)"
-                    >
-                      <button
-                        type="button"
-                        class="project-media-frame"
-                        [attr.aria-label]="'Ver imagen en grande: ' + image.label"
-                        (click)="openLightbox(project, imageIndex)"
-                      >
-                        <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
-                        <span class="project-media-zoom-hint" aria-hidden="true">⤢</span>
-                      </button>
-                      <figcaption class="project-gallery-caption">
-                        <span>{{ image.number }}</span>
-                        <strong>{{ image.label }}</strong>
-                      </figcaption>
-                    </figure>
-                  }
-                </div>
-
-                <button
-                  class="project-gallery-arrow project-gallery-arrow-left"
-                  type="button"
-                  aria-label="Mostrar imagen anterior"
-                  (click)="previousGallery(project.slug, gallery.length, $event)"
-                >
-                  <span aria-hidden="true">←</span>
-                </button>
-                <button
-                  class="project-gallery-arrow project-gallery-arrow-right"
-                  type="button"
-                  aria-label="Mostrar imagen siguiente"
-                  (click)="nextGallery(project.slug, gallery.length, $event)"
-                >
-                  <span aria-hidden="true">→</span>
-                </button>
-
-                <div class="project-gallery-dots" aria-label="Seleccionar imagen">
-                  @for (image of gallery; track image.src; let imageIndex = $index) {
-                    <button
-                      type="button"
-                      [class.is-active]="imageIndex === getGalleryIndex(project.slug)"
-                      [attr.aria-label]="'Mostrar ' + image.label"
-                      [attr.aria-current]="imageIndex === getGalleryIndex(project.slug) ? 'true' : null"
-                      (click)="selectGalleryImage(project.slug, imageIndex, gallery.length, $event)"
-                    ></button>
-                  }
-                </div>
-
-                <div class="project-gallery-counter" aria-live="polite">
-                  <span>{{ getGalleryIndex(project.slug) + 1 }}</span>
-                  <i aria-hidden="true"></i>
-                  <span>{{ gallery.length }}</span>
-                </div>
-              </div>
-            } @else {
-              <button
-                type="button"
-                class="project-media-frame"
-                aria-label="Ver imagen en grande"
-                (click)="openLightbox(project, 0)"
-              >
-                <img class="project-single-image" [src]="project.image" [alt]="project.imageAlt" loading="lazy" width="1600" height="1000" />
-                <span class="project-media-zoom-hint" aria-hidden="true">⤢</span>
-              </button>
-            }
-          </div>
+            <img class="project-single-image" [src]="project.image" [alt]="project.imageAlt" loading="lazy" width="1600" height="1000" />
+          </a>
 
           <div class="project-content">
             <div class="project-title-row">
@@ -287,30 +210,24 @@
               <span class="project-number">{{ project.number }}</span>
             </div>
             <p class="project-summary">{{ project.summary }}</p>
-            <p class="project-description">{{ project.description }}</p>
-            <div class="project-details">
-              <div>
-                <span class="detail-label">Reto</span>
-                <p>{{ project.challenge }}</p>
-              </div>
-              <div>
-                <span class="detail-label">Funciones</span>
-                <ul>
-                  @for (feature of project.features; track feature) {
-                    <li>{{ feature }}</li>
-                  }
-                </ul>
-              </div>
-            </div>
-            <div class="technology-list" aria-label="Tecnologías utilizadas">
-              @for (technology of project.technologies; track technology) {
+            <p class="project-role"><strong>Mi rol:</strong> {{ project.role }}</p>
+            <ul class="project-key-features">
+              @for (feature of project.keyFeatures; track feature) {
+                <li>{{ feature }}</li>
+              }
+            </ul>
+            <div class="technology-list" aria-label="Tecnologías principales">
+              @for (technology of project.primaryTechnologies; track technology) {
                 <span>{{ technology }}</span>
               }
             </div>
             <div class="project-links">
-              @for (link of project.links; track link.url) {
-                <a [href]="link.url" target="_blank" rel="noreferrer">
-                  {{ link.label }} <span aria-hidden="true">↗</span>
+              <a [routerLink]="['/projects', project.slug]">
+                Ver caso de estudio <span aria-hidden="true">→</span>
+              </a>
+              @if (primaryExternalLink(project); as liveLink) {
+                <a [href]="liveLink.url" target="_blank" rel="noreferrer">
+                  {{ liveLink.label }} <span aria-hidden="true">↗</span>
                 </a>
               }
             </div>
@@ -407,60 +324,3 @@
     </div>
   </section>
 </main>
-
-@if (lightbox(); as box) {
-  <div
-    class="lightbox-overlay"
-    role="dialog"
-    aria-modal="true"
-    [attr.aria-label]="'Galería de ' + box.title"
-    (click)="closeLightbox()"
-  >
-    <div class="lightbox-panel" tabindex="-1" (click)="$event.stopPropagation()">
-      <button type="button" class="lightbox-close" aria-label="Cerrar" (click)="closeLightbox()">
-        <span aria-hidden="true">✕</span>
-      </button>
-
-      <div class="lightbox-stage">
-        @if (box.images.length > 1) {
-          <button
-            type="button"
-            class="lightbox-nav lightbox-nav-prev"
-            aria-label="Imagen anterior"
-            (click)="lightboxPrevious()"
-          >
-            <span aria-hidden="true">←</span>
-          </button>
-        }
-
-        <img class="lightbox-image" [src]="box.images[box.index].src" [alt]="box.images[box.index].alt" />
-
-        @if (box.images.length > 1) {
-          <button
-            type="button"
-            class="lightbox-nav lightbox-nav-next"
-            aria-label="Imagen siguiente"
-            (click)="lightboxNext()"
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        }
-      </div>
-
-      <div class="lightbox-footer">
-        <div class="lightbox-caption">
-          <span>{{ box.images[box.index].number }}</span>
-          <strong>{{ box.images[box.index].label }}</strong>
-        </div>
-
-        @if (box.images.length > 1) {
-          <div class="lightbox-counter" aria-live="polite">
-            <span>{{ box.index + 1 }}</span>
-            <i aria-hidden="true"></i>
-            <span>{{ box.images.length }}</span>
-          </div>
-        }
-      </div>
-    </div>
-  </div>
-}

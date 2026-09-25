@@ -15,6 +15,16 @@ export const routes: Routes = [
       )
   },
   {
+    path: 'projects/:slug',
+    loadComponent: () =>
+      import(
+        './pages/project-detail/project-detail'
+      ).then(
+        (component) =>
+          component.ProjectDetailComponent
+      )
+  },
+  {
     path: '**',
     redirectTo: ''
   }

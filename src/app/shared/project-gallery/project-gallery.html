@@ -1,0 +1,128 @@
+<div
+  class="project-gallery"
+  role="region"
+  tabindex="0"
+  aria-roledescription="carrusel"
+  [attr.aria-label]="'Galería de ' + title()"
+  (mouseenter)="pause()"
+  (mouseleave)="resume()"
+  (keydown)="handleKeydown($event)"
+>
+  <div class="project-gallery-stage" aria-live="polite">
+    @for (image of images(); track image.src; let imageIndex = $index) {
+      <figure
+        class="project-gallery-slide"
+        [class.is-active]="imageIndex === activeIndex()"
+        [attr.aria-hidden]="imageIndex !== activeIndex()"
+      >
+        <button
+          type="button"
+          class="project-media-frame"
+          [attr.aria-label]="'Ver imagen en grande: ' + image.label"
+          (click)="openLightbox(imageIndex)"
+        >
+          <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
+          <span class="project-media-zoom-hint" aria-hidden="true">⤢</span>
+        </button>
+        <figcaption class="project-gallery-caption">
+          <span>{{ image.number }}</span>
+          <strong>{{ image.label }}</strong>
+        </figcaption>
+      </figure>
+    }
+  </div>
+
+  @if (images().length > 1) {
+    <button
+      class="project-gallery-arrow project-gallery-arrow-left"
+      type="button"
+      aria-label="Mostrar imagen anterior"
+      (click)="previous($event)"
+    >
+      <span aria-hidden="true">←</span>
+    </button>
+    <button
+      class="project-gallery-arrow project-gallery-arrow-right"
+      type="button"
+      aria-label="Mostrar imagen siguiente"
+      (click)="next($event)"
+    >
+      <span aria-hidden="true">→</span>
+    </button>
+
+    <div class="project-gallery-dots" aria-label="Seleccionar imagen">
+      @for (image of images(); track image.src; let imageIndex = $index) {
+        <button
+          type="button"
+          [class.is-active]="imageIndex === activeIndex()"
+          [attr.aria-label]="'Mostrar ' + image.label"
+          [attr.aria-current]="imageIndex === activeIndex() ? 'true' : null"
+          (click)="select(imageIndex, $event)"
+        ></button>
+      }
+    </div>
+
+    <div class="project-gallery-counter" aria-live="polite">
+      <span>{{ activeIndex() + 1 }}</span>
+      <i aria-hidden="true"></i>
+      <span>{{ images().length }}</span>
+    </div>
+  }
+</div>
+
+@if (lightboxOpen()) {
+  <div
+    class="lightbox-overlay"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'Galería de ' + title()"
+    (click)="closeLightbox()"
+  >
+    <div class="lightbox-panel" tabindex="-1" (click)="$event.stopPropagation()">
+      <button type="button" class="lightbox-close" aria-label="Cerrar" (click)="closeLightbox()">
+        <span aria-hidden="true">✕</span>
+      </button>
+
+      <div class="lightbox-stage">
+        @if (images().length > 1) {
+          <button
+            type="button"
+            class="lightbox-nav lightbox-nav-prev"
+            aria-label="Imagen anterior"
+            (click)="lightboxPrevious()"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+        }
+
+        <img class="lightbox-image" [src]="images()[lightboxIndex()].src" [alt]="images()[lightboxIndex()].alt" />
+
+        @if (images().length > 1) {
+          <button
+            type="button"
+            class="lightbox-nav lightbox-nav-next"
+            aria-label="Imagen siguiente"
+            (click)="lightboxNext()"
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        }
+      </div>
+
+      <div class="lightbox-footer">
+        <div class="lightbox-caption">
+          <span>{{ images()[lightboxIndex()].number }}</span>
+          <strong>{{ images()[lightboxIndex()].label }}</strong>
+        </div>
+
+        @if (images().length > 1) {
+          <div class="lightbox-counter" aria-live="polite">
+            <span>{{ lightboxIndex() + 1 }}</span>
+            <i aria-hidden="true"></i>
+            <span>{{ images().length }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

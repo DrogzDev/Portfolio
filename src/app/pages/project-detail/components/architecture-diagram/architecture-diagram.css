@@ -1,0 +1,133 @@
+:host {
+  display: block;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.architecture-summary {
+  margin: 0 0 2rem;
+  max-width: 62ch;
+  color: var(--text-soft);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.architecture-diagram {
+  display: flex;
+  align-items: stretch;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.architecture-diagram.is-steps {
+  flex-direction: column;
+  overflow-x: visible;
+}
+
+.architecture-stage {
+  flex: 0 0 240px;
+  min-width: 240px;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.is-steps .architecture-stage {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.architecture-stage-title {
+  margin: 0 0 0.9rem;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.architecture-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.architecture-node strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.architecture-node p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.architecture-connector {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-width: 64px;
+  text-align: center;
+}
+
+.is-steps .architecture-connector {
+  min-width: 0;
+  padding-block: 0.15rem;
+}
+
+.architecture-connector-arrow {
+  color: var(--text-soft);
+  font-size: 1.4rem;
+}
+
+.is-steps .architecture-connector-arrow {
+  transform: rotate(90deg);
+}
+
+.architecture-connector-label {
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+}
+
+.architecture-connector-label-muted {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+@media (max-width: 800px) {
+  .architecture-diagram:not(.is-steps) {
+    flex-direction: column;
+    overflow-x: visible;
+  }
+  .architecture-diagram:not(.is-steps) .architecture-stage {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .architecture-diagram:not(.is-steps) .architecture-connector-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 540px) {
+  .architecture-stage {
+    padding: 1rem;
+  }
+}

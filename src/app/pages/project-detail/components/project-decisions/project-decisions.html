@@ -1,0 +1,13 @@
+@if (decisions().length) {
+  <section class="detail-section">
+    <h2>Decisiones técnicas</h2>
+    <div class="decisions-list">
+      @for (decision of decisions(); track decision.title) {
+        <article class="decision-card">
+          <h3>{{ decision.title }}</h3>
+          <p>{{ decision.detail }}</p>
+        </article>
+      }
+    </div>
+  </section>
+}

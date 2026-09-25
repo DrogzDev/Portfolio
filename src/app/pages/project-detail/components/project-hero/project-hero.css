@@ -1,0 +1,99 @@
+:host {
+  display: block;
+  padding-block: clamp(7rem, 12vw, 9rem) 2rem;
+}
+
+.project-hero-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0 0 1.2rem;
+}
+
+.project-hero-number {
+  color: var(--text-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.project-hero-category {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-pill {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.status-pill[data-status="live"] {
+  color: var(--dark);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.status-pill[data-status="private"] {
+  color: var(--text-soft);
+  background: var(--surface-muted);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 830;
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.project-hero-summary {
+  margin: 1.6rem 0 0;
+  max-width: 62ch;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 560;
+  line-height: 1.4;
+}
+
+.project-hero-role {
+  margin: 1.1rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.project-hero-role strong {
+  color: var(--text);
+}
+
+.project-hero-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1.4rem;
+}
+
+.project-hero-stack span {
+  padding: 0.48rem 0.72rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.project-hero-image {
+  width: 100%;
+  height: auto;
+  margin-top: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  object-fit: cover;
+}

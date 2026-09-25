@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Miguel Luna — CV</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --text: #121212;
+    --text-soft: #55554f;
+    --border: #d8d6cd;
+    --accent: #a8c400;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2.5rem 1.5rem;
+    color: var(--text);
+    background: #f6f5f0;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+  }
+
+  header.cv-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px solid var(--text);
+  }
+
+  header.cv-header h1 {
+    margin: 0;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  header.cv-header .role {
+    margin: 0.3rem 0 0;
+    color: var(--text-soft);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .contact-line {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+
+  .contact-line a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section {
+    margin-top: 2.1rem;
+  }
+
+  section > h2 {
+    margin: 0 0 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+  }
+
+  .summary {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .entry {
+    margin-bottom: 1.3rem;
+  }
+
+  .entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .entry-title {
+    font-weight: 750;
+    font-size: 0.98rem;
+  }
+
+  .entry-subtitle {
+    color: var(--text-soft);
+    font-size: 0.85rem;
+  }
+
+  .entry-meta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  .entry ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.1rem;
+  }
+
+  .entry li {
+    margin-bottom: 0.3rem;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+  }
+
+  .todo {
+    color: #a8341c;
+    font-weight: 700;
+    background: #fdecea;
+    padding: 0.05rem 0.35rem;
+    border-radius: 0.3rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem 2rem;
+  }
+
+  .skills-group h3 {
+    margin: 0 0 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 750;
+  }
+
+  .skills-group p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+
+  @media print {
+    body { background: #ffffff; padding: 0; }
+    .page { border: 0; padding: 0; max-width: none; }
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 1.5rem; }
+    header.cv-header { flex-direction: column; align-items: flex-start; }
+    .contact-line { text-align: left; }
+    .skills-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="cv-header">
+    <div>
+      <h1>Miguel Luna</h1>
+      <p class="role">Full Stack Developer — Python / Django · Angular / React · TypeScript</p>
+    </div>
+    <div class="contact-line">
+      <div><a href="mailto:migueluna0723@gmail.com">migueluna0723@gmail.com</a></div>
+      <div><a href="https://github.com/DrogzDev" target="_blank" rel="noreferrer">github.com/DrogzDev</a></div>
+      <div><span class="todo">[AGREGAR: ciudad/país, teléfono si se quiere incluir]</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Resumen profesional</h2>
+    <p class="summary">
+      Desarrollador Full Stack especializado en Angular, Django y Python. Construyo sistemas completos
+      —frontend, backend, base de datos y despliegue— entendiendo primero el problema de negocio antes de
+      escribir código. Experiencia real con dashboards, inventario, facturación, datos financieros en tiempo
+      real, tareas programadas en segundo plano, notificaciones e integraciones con APIs externas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Experiencia</h2>
+    <div class="entry">
+      <div class="entry-header">
+        <div>
+          <div class="entry-title">Ministerio del Poder Popular para Hábitat y Vivienda</div>
+          <div class="entry-subtitle">
+            <span class="todo">[AGREGAR: cargo/rol exacto]</span> ·
+            <span class="todo">[AGREGAR: modalidad — freelance / contrato / empleado]</span>
+          </div>
+        </div>
+        <div class="entry-meta"><span class="todo">[AGREGAR: fechas exactas]</span></div>
+      </div>
+      <ul>
+        <li>Diseñé un flujo de importación masiva de inventario desde Excel con un paso de revisión (existente / nuevo / a revisar / con error) antes de escribir cualquier cambio en base de datos, evitando corromper el stock real de un sistema institucional en producción.</li>
+        <li>Implementé permisos por rol (Administrador, Director, Almacenista) sobre Django Groups, con acceso denegado por defecto si un usuario no tiene exactamente un rol asignado.</li>
+        <li>Construí el frontend en Angular y la API en Django REST Framework para gestión de inventario, almacenes, movimientos de stock, hojas de ruta y notas de entrega.</li>
+        <li><span class="todo">[AGREGAR MÉTRICA REAL: número de productos/movimientos gestionados, si se puede compartir]</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Proyectos seleccionados</h2>
+
+    <div class="entry">
+      <div class="entry-header">
+        <div>
+          <div class="entry-title">Venecambio — plataforma financiera (Django, Celery, Redis, Ollama, React)</div>
+        </div>
+        <div class="entry-meta"><span class="todo">[AGREGAR: fecha]</span></div>
+      </div>
+      <ul>
+        <li>Diseñé un analizador de mercado con IA local (Ollama) donde el modelo solo redacta el texto de tendencia/riesgo/mejores horas — nunca calcula cifras, que Django resuelve de forma determinista antes de entregárselas, evitando que un LLM invente métricas financieras.</li>
+        <li>Implementé tareas periódicas con Celery Beat y Redis (captura de precios de Binance P2P cada 5 minutos, cierres diarios, reconciliación de alertas) para mantener un histórico de precios siempre actualizado sin bloquear la aplicación.</li>
+        <li>Integré un listener de Telegram (Telethon) que detecta alertas bancarias en tiempo real y las distribuye por Web Push y Firebase Cloud Messaging, incluyendo una app Android empaquetada con Capacitor.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <div>
+          <div class="entry-title">Sistema POS — tienda de calzado (Angular, Django REST Framework, PostgreSQL)</div>
+        </div>
+        <div class="entry-meta"><span class="todo">[AGREGAR: fecha]</span></div>
+      </div>
+      <ul>
+        <li>Modelé el dominio de ventas (productos, variantes por talla/color, stock por tienda, ventas y líneas de venta) para un negocio con múltiples locales.</li>
+        <li>Implementé congelamiento de tasa de cambio por venta (USD/bolívares), incluyendo integración con la API de Venecambio como fuente de tasas.</li>
+        <li>Construí un dashboard de rentabilidad e inventario con alertas de stock bajo por variante y almacén.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <div>
+          <div class="entry-title">Care Perro's House — producto de marca (Astro, React, GSAP, Leaflet)</div>
+        </div>
+        <div class="entry-meta"><span class="todo">[AGREGAR: fecha]</span></div>
+      </div>
+      <ul>
+        <li>Diseñé e implementé una experiencia de marca interactiva con animaciones GSAP/ScrollTrigger y una mascota que responde al cursor, siempre respetando la preferencia de movimiento reducido del usuario.</li>
+        <li>Integré un mapa real (Leaflet + OpenStreetMap) para la ubicación del negocio en vez de depender de una API de mapas de pago.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skills-group">
+        <h3>Frontend</h3>
+        <p>Angular, TypeScript, React, HTML, CSS, GSAP</p>
+      </div>
+      <div class="skills-group">
+        <h3>Backend</h3>
+        <p>Python, Django, Django REST Framework, JWT</p>
+      </div>
+      <div class="skills-group">
+        <h3>Bases de datos</h3>
+        <p>PostgreSQL, SQLite, Redis</p>
+      </div>
+      <div class="skills-group">
+        <h3>DevOps</h3>
+        <p>Celery, Celery Beat, Docker, Podman, Git</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Educación</h2>
+    <p class="summary"><span class="todo">[AGREGAR: título, institución, año]</span></p>
+  </section>
+
+  <section>
+    <h2>Idiomas</h2>
+    <p class="summary"><span class="todo">[AGREGAR: idiomas y nivel]</span></p>
+  </section>
+
+</div>
+</body>
+</html>

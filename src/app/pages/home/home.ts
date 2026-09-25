@@ -7,40 +7,37 @@ import {
   inject,
   signal
 } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from '../../data/projects.data';
-import { PortfolioProject, ProjectGalleryImage } from '../../core/models/project.model';
+import { PortfolioProject, ProjectLink } from '../../core/models/project.model';
+import { SeoService } from '../../core/services/seo.service';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class HomeComponent {
   // Dependencias
-  private readonly title = inject(Title);
+  private readonly seo = inject(SeoService);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
 
   // Constantes de animación
   private readonly HERO_SWAP_DURATION = 0.22;
   private readonly HERO_RESIZE_DURATION = 0.72;
-  private readonly GALLERY_DELAY = 4500;
-  private readonly galleryTimers = new Map<string, number>();
   private heroVisualAnimating = false;
   private mediaContext: ReturnType<typeof gsap.matchMedia> | null = null;
 
   // Estados
   readonly menuOpen = signal(false);
   readonly portraitVisible = signal(false);
-  readonly galleryIndexes = signal<Record<string, number>>({});
-  readonly lightbox = signal<{ title: string; images: ProjectGalleryImage[]; index: number } | null>(null);
 
   // Datos
   readonly projects = PROJECTS;
@@ -62,10 +59,15 @@ export class HomeComponent {
   ] as const;
 
   constructor() {
-    this.title.setTitle('Miguel Luna | Full Stack Developer');
+    this.seo.update({
+      title: 'Miguel Luna | Full Stack Developer',
+      description: 'Full Stack Developer especializado en Angular y Django. Construyo aplicaciones de datos en tiempo real, inventario, ventas y automatización backend.',
+      path: '/',
+      image: '/yoldan.png',
+      imageAlt: 'Retrato de Miguel Luna, desarrollador Full Stack'
+    });
     afterNextRender(() => {
       this.initializeAnimations();
-      this.initializeGalleryAutoplay();
     });
     this.destroyRef.onDestroy(() => this.cleanup());
   }
@@ -79,21 +81,12 @@ export class HomeComponent {
   }
   @HostListener('document:keydown.escape')
   handleEscapeKey(): void {
-    if (this.lightbox()) {
-      this.closeLightbox();
-      return;
-    }
     this.closeMenu();
   }
 
-  @HostListener('document:keydown.arrowright')
-  handleLightboxArrowRight(): void {
-    if (this.lightbox()) this.lightboxNext();
-  }
-
-  @HostListener('document:keydown.arrowleft')
-  handleLightboxArrowLeft(): void {
-    if (this.lightbox()) this.lightboxPrevious();
+  // ---- Utilidades de proyecto ----
+  primaryExternalLink(project: PortfolioProject): ProjectLink | undefined {
+    return project.links.find(link => link.type === 'live');
   }
 
   // ---- Easter Egg del Hero ----
@@ -212,154 +205,6 @@ export class HomeComponent {
   private animateCodeReveal(view: HTMLElement): void {
     const lines = view.querySelectorAll('.code-line');
     gsap.from(lines, { x: 18, autoAlpha: 0, stagger: 0.055, duration: 0.35, ease: 'power2.out' });
-  }
-
-  // ---- Galerías ----
-  getGalleryIndex(slug: string): number {
-    return this.galleryIndexes()[slug] ?? 0;
-  }
-
-  nextGallery(slug: string, total: number, event?: Event): void {
-    event?.stopPropagation();
-    this.changeGalleryImage(slug, total, 1);
-    if (event) this.restartGalleryAutoplay(slug, total);
-  }
-
-  previousGallery(slug: string, total: number, event?: Event): void {
-    event?.stopPropagation();
-    this.changeGalleryImage(slug, total, -1);
-    if (event) this.restartGalleryAutoplay(slug, total);
-  }
-
-  selectGalleryImage(slug: string, index: number, total: number, event?: Event): void {
-    event?.stopPropagation();
-    this.galleryIndexes.update(v => ({ ...v, [slug]: index }));
-    this.restartGalleryAutoplay(slug, total);
-  }
-
-  pauseGallery(slug: string): void {
-    this.clearGalleryTimer(slug);
-  }
-
-  resumeGallery(slug: string, total: number): void {
-    this.startGalleryTimer(slug, total);
-  }
-
-  handleGalleryKeydown(event: KeyboardEvent, slug: string, total: number): void {
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      this.nextGallery(slug, total);
-      this.restartGalleryAutoplay(slug, total);
-    } else if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      this.previousGallery(slug, total);
-      this.restartGalleryAutoplay(slug, total);
-    }
-  }
-
-  private initializeGalleryAutoplay(): void {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.projects.forEach(project => {
-      if (!project.gallery?.length) return;
-      this.galleryIndexes.update(v => ({ ...v, [project.slug]: v[project.slug] ?? 0 }));
-      if (!reduceMotion && project.gallery.length > 1) {
-        this.startGalleryTimer(project.slug, project.gallery.length);
-      }
-    });
-  }
-
-  private changeGalleryImage(slug: string, total: number, direction: 1 | -1): void {
-    if (total <= 0) return;
-    const current = this.getGalleryIndex(slug);
-    const next = (current + direction + total) % total;
-    this.galleryIndexes.update(v => ({ ...v, [slug]: next }));
-  }
-
-  private startGalleryTimer(slug: string, total: number): void {
-    this.clearGalleryTimer(slug);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || total < 2) return;
-    const timerId = window.setInterval(() => this.changeGalleryImage(slug, total, 1), this.GALLERY_DELAY);
-    this.galleryTimers.set(slug, timerId);
-  }
-
-  private restartGalleryAutoplay(slug: string, total: number): void {
-    this.startGalleryTimer(slug, total);
-  }
-
-  private clearGalleryTimer(slug: string): void {
-    const timerId = this.galleryTimers.get(slug);
-    if (timerId !== undefined) {
-      window.clearInterval(timerId);
-      this.galleryTimers.delete(slug);
-    }
-  }
-
-  private clearAllGalleryTimers(): void {
-    this.galleryTimers.forEach(timer => window.clearInterval(timer));
-    this.galleryTimers.clear();
-  }
-
-  // ---- Lightbox de fotos ----
-  openLightbox(project: PortfolioProject, index: number): void {
-    const images = project.gallery?.length
-      ? project.gallery
-      : [{ number: '01', label: project.title, src: project.image, alt: project.imageAlt }];
-
-    const safeIndex = Math.min(Math.max(index, 0), images.length - 1);
-    this.lightbox.set({ title: project.title, images, index: safeIndex });
-    document.documentElement.classList.add('lightbox-open');
-    requestAnimationFrame(() => this.playLightboxEnterAnimation());
-  }
-
-  closeLightbox(): void {
-    if (!this.lightbox()) return;
-    this.playLightboxExitAnimation(() => {
-      this.lightbox.set(null);
-      document.documentElement.classList.remove('lightbox-open');
-    });
-  }
-
-  lightboxNext(): void {
-    this.shiftLightboxImage(1);
-  }
-
-  lightboxPrevious(): void {
-    this.shiftLightboxImage(-1);
-  }
-
-  private shiftLightboxImage(direction: 1 | -1): void {
-    const box = this.lightbox();
-    if (!box || box.images.length < 2) return;
-    const next = (box.index + direction + box.images.length) % box.images.length;
-    this.lightbox.set({ ...box, index: next });
-  }
-
-  private playLightboxEnterAnimation(): void {
-    const overlay = this.host.nativeElement.querySelector<HTMLElement>('.lightbox-overlay');
-    const panel = this.host.nativeElement.querySelector<HTMLElement>('.lightbox-panel');
-    if (!overlay || !panel) return;
-
-    panel.focus();
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    gsap.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: 'power2.out' });
-    gsap.fromTo(panel, { autoAlpha: 0, scale: 0.92, y: 26 }, {
-      autoAlpha: 1, scale: 1, y: 0, duration: 0.5, ease: 'power3.out'
-    });
-  }
-
-  private playLightboxExitAnimation(onComplete: () => void): void {
-    const overlay = this.host.nativeElement.querySelector<HTMLElement>('.lightbox-overlay');
-    const panel = this.host.nativeElement.querySelector<HTMLElement>('.lightbox-panel');
-
-    if (!overlay || !panel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      onComplete();
-      return;
-    }
-
-    gsap.to(panel, { autoAlpha: 0, scale: 0.94, y: 18, duration: 0.22, ease: 'power2.in' });
-    gsap.to(overlay, { autoAlpha: 0, duration: 0.26, ease: 'power2.in', onComplete });
   }
 
   // ---- Animaciones GSAP ----
@@ -947,12 +792,5 @@ export class HomeComponent {
   private cleanup(): void {
     this.mediaContext?.revert();
     this.mediaContext = null;
-    this.clearAllGalleryTimers();
-    // onDestroy también corre en el render de servidor (SSR/prerender), donde
-    // `document` no existe: sin esta guarda, destruir la vista en el
-    // servidor lanza un ReferenceError.
-    if (typeof document !== 'undefined') {
-      document.documentElement.classList.remove('lightbox-open');
-    }
   }
 }

@@ -1,0 +1,86 @@
+:host {
+  display: block;
+  min-height: 100%;
+}
+
+.project-detail-nav {
+  padding-top: 2rem;
+}
+
+.back-link {
+  display: inline-flex;
+  gap: 0.6rem;
+  align-items: center;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--text);
+}
+
+.project-detail-body {
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(5rem, 9vw, 8rem);
+}
+
+.project-detail-body > * + * {
+  display: block;
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.detail-section h2 {
+  margin: 0 0 1.2rem;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.results-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.results-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.results-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: var(--text);
+  border-radius: 50%;
+}
+
+.project-not-found {
+  padding-block: clamp(8rem, 16vw, 12rem);
+  text-align: center;
+}
+
+.project-not-found h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.project-not-found p {
+  margin: 0 0 1.5rem;
+  color: var(--text-soft);
+}
+
+.project-not-found a {
+  font-weight: 700;
+  text-decoration: underline;
+}

@@ -1,0 +1,33 @@
+<section class="detail-section architecture" [attr.aria-label]="'Arquitectura de ' + projectTitle()">
+  <h2>Arquitectura</h2>
+  <p class="architecture-summary">{{ architecture().summary }}</p>
+
+  <div class="architecture-diagram" [class.is-steps]="architecture().layout === 'steps'">
+    @for (group of groups(); track group.name; let i = $index) {
+      <div class="architecture-stage">
+        <h3 class="architecture-stage-title">{{ group.name }}</h3>
+        <ul class="architecture-nodes">
+          @for (node of group.nodes; track node.id) {
+            <li class="architecture-node">
+              <strong>{{ node.label }}</strong>
+              <p>{{ node.description }}</p>
+            </li>
+          }
+        </ul>
+      </div>
+
+      @if (i < groups().length - 1) {
+        <div class="architecture-connector">
+          @if (isConnected(i)) {
+            <span class="architecture-connector-arrow" aria-hidden="true">→</span>
+            @if (connectorLabel(i); as label) {
+              <span class="architecture-connector-label">{{ label }}</span>
+            }
+          } @else {
+            <span class="architecture-connector-label architecture-connector-label-muted">sin conexión todavía</span>
+          }
+        </div>
+      }
+    }
+  </div>
+</section>
