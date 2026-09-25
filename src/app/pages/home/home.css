@@ -742,9 +742,10 @@
 }
 
 .project-single-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 520px;
   object-fit: cover;
   transition: transform 500ms ease;
   will-change: transform;
@@ -1326,8 +1327,7 @@ button:focus-visible,
     top: 0.75rem;
     right: 0.75rem;
   }
-  .project-media,
-  .project-single-image {
+  .project-media {
     min-height: 330px;
   }
   .project-content h3 {

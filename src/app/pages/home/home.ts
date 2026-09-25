@@ -477,8 +477,10 @@ export class HomeComponent {
         });
       }
       if (singleImage && desktop) {
-        gsap.fromTo(singleImage, { scale: 1.12, yPercent: -4 }, {
-          scale: 1, yPercent: 5, ease: 'none',
+        // Parallax muy sutil: antes iba de 112% a 100% de escala (demasiado
+        // agresivo para una screenshot de UI, recortaba contenido visible).
+        gsap.fromTo(singleImage, { scale: 1.035, yPercent: -1.2 }, {
+          scale: 1, yPercent: 1.2, ease: 'none',
           scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 0.8 }
         });
       }
