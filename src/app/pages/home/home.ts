@@ -43,7 +43,7 @@ export class HomeComponent {
   // Datos
   readonly projects = PROJECTS;
   readonly currentYear = new Date().getFullYear();
-  readonly email = 'migueluna0723@gmail.com';
+  readonly email = 'migueluna33@gmail.com';
   readonly cvUrl = '/cv/miguel-luna-cv.pdf';
   readonly githubUrl = 'https://github.com/DrogzDev';
   readonly marqueeSkills = ['Angular', 'TypeScript', 'Python', 'Django', 'REST APIs', 'PostgreSQL', 'Redis', 'Celery', 'Web Push', 'GSAP'] as const;
