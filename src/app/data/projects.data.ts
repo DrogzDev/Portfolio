@@ -99,8 +99,7 @@ export const PROJECTS_ES: PortfolioProject[] = [
     ],
 
     links: [
-      { label: 'Ver proyecto', url: 'https://venecambio.lat/', type: 'live' },
-      { label: 'Backend', url: 'https://github.com/DrogzDev/Vene-Backend', type: 'backend' }
+      { label: 'Ver proyecto', url: 'https://venecambio.lat/', type: 'live' }
     ]
   },
 
@@ -176,8 +175,7 @@ export const PROJECTS_ES: PortfolioProject[] = [
 
     links: [
       { label: 'Ver demo', url: 'https://demo.noctesystems.online/', type: 'live' },
-      { label: 'Repositorio demo', url: 'https://github.com/DrogzDev/Tienda-Demo', type: 'repository' },
-      { label: 'Ver repositorio', url: 'https://github.com/DrogzDev/Tienda', type: 'repository' }
+      { label: 'Ver repositorio', url: 'https://github.com/DrogzDev/Tienda-Demo', type: 'repository' }
     ]
   },
 
@@ -427,8 +425,7 @@ export const PROJECTS_EN: PortfolioProject[] = [
     ],
 
     links: [
-      { label: 'View project', url: 'https://venecambio.lat/', type: 'live' },
-      { label: 'Backend', url: 'https://github.com/DrogzDev/Vene-Backend', type: 'backend' }
+      { label: 'View project', url: 'https://venecambio.lat/', type: 'live' }
     ]
   },
 
@@ -504,8 +501,7 @@ export const PROJECTS_EN: PortfolioProject[] = [
 
     links: [
       { label: 'View demo', url: 'https://demo.noctesystems.online/', type: 'live' },
-      { label: 'Demo repository', url: 'https://github.com/DrogzDev/Tienda-Demo', type: 'repository' },
-      { label: 'View repository', url: 'https://github.com/DrogzDev/Tienda', type: 'repository' }
+      { label: 'View repository', url: 'https://github.com/DrogzDev/Tienda-Demo', type: 'repository' }
     ]
   },
 
