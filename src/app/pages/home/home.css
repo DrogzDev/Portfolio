@@ -1209,7 +1209,9 @@ button:focus-visible,
     padding-top: 130px;
   }
   .hero h1 {
-    font-size: clamp(4rem, 17vw, 7rem);
+    font-size: clamp(3.6rem, 15vw, 6.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
   }
   .hero-meta {
     grid-template-columns: 1fr;
@@ -1278,7 +1280,9 @@ button:focus-visible,
     width: 100%;
   }
   .hero h1 {
-    font-size: clamp(3.7rem, 18vw, 5.5rem);
+    font-size: clamp(3rem, 13vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
   }
   .hero-visual {
     box-shadow: 10px 10px 0 var(--accent);
