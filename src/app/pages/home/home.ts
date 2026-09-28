@@ -47,7 +47,9 @@ export class HomeComponent {
   readonly projects = computed(() => projectsFor(this.i18n.lang()));
   readonly currentYear = new Date().getFullYear();
   readonly email = 'migueluna33@gmail.com';
-  readonly cvUrl = '/cv/miguel-luna-cv.pdf';
+  readonly cvUrl = computed(() =>
+    this.i18n.lang() === 'en' ? '/cv/miguel-luna-cv-en.pdf' : '/cv/miguel-luna-cv.pdf'
+  );
   readonly githubUrl = 'https://github.com/DrogzDev';
   readonly marqueeSkills = ['Angular', 'TypeScript', 'Python', 'Django', 'REST APIs', 'PostgreSQL', 'Redis', 'Celery', 'Web Push', 'GSAP'] as const;
   readonly capabilities = computed(() => this.content().capabilities.items);

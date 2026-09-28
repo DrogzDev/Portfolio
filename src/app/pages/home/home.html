@@ -30,7 +30,7 @@
       <a href="#capacidades" (click)="closeMenu()">{{ content().header.stack }}</a>
       <a href="#sobre-mi" (click)="closeMenu()">{{ content().header.about }}</a>
       <a href="#contacto" (click)="closeMenu()">{{ content().header.contact }}</a>
-      <a class="navigation-cv" [href]="cvUrl" target="_blank" rel="noreferrer" (click)="closeMenu()">{{ content().header.downloadCv }}</a>
+      <a class="navigation-cv" [href]="cvUrl()" target="_blank" rel="noreferrer" (click)="closeMenu()">{{ content().header.downloadCv }}</a>
     </nav>
   </div>
 </header>
@@ -49,7 +49,7 @@
       </p>
       <div class="hero-actions">
         <a class="button button-primary" href="#proyectos">{{ content().hero.viewProjects }} <span aria-hidden="true">↓</span></a>
-        <a class="button button-secondary" [href]="cvUrl" target="_blank" rel="noreferrer">{{ content().hero.downloadCv }} <span aria-hidden="true">↗</span></a>
+        <a class="button button-secondary" [href]="cvUrl()" target="_blank" rel="noreferrer">{{ content().hero.downloadCv }} <span aria-hidden="true">↗</span></a>
       </div>
       <div class="hero-meta">
         <div><strong>{{ content().hero.meta.realtimeTitle }}</strong><span>{{ content().hero.meta.realtimeDescription }}</span></div>
@@ -313,7 +313,7 @@
         <span>© {{ currentYear }} Miguel Luna</span>
         <div>
           <a [href]="githubUrl" target="_blank" rel="noreferrer">GitHub</a>
-          <a [href]="cvUrl" target="_blank" rel="noreferrer">CV</a>
+          <a [href]="cvUrl()" target="_blank" rel="noreferrer">CV</a>
         </div>
       </div>
     </div>
