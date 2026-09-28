@@ -1,34 +1,37 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Miguel Luna — CV</title>
+<title>Miguel Luna — Resume</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root {
     --text: #121212;
     --text-soft: #55554f;
     --border: #d8d6cd;
-    --accent: #a8c400;
     --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   }
 
   * { box-sizing: border-box; }
 
+  html {
+    font-size: 15px;
+  }
+
   body {
     margin: 0;
-    padding: 2.5rem 1.5rem;
+    padding: 2rem 1.5rem;
     color: var(--text);
     background: #f6f5f0;
     font-family: var(--font-sans);
-    line-height: 1.5;
+    line-height: 1.45;
   }
 
   .page {
     max-width: 780px;
     margin: 0 auto;
-    padding: 3rem;
+    padding: 2.5rem;
     background: #ffffff;
     border: 1px solid var(--border);
   }
@@ -39,28 +42,29 @@
     justify-content: space-between;
     align-items: flex-end;
     gap: 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.1rem;
     border-bottom: 3px solid var(--text);
   }
 
   header.cv-header h1 {
     margin: 0;
-    font-size: 2.1rem;
+    font-size: 1.9rem;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
   }
 
   header.cv-header .role {
-    margin: 0.3rem 0 0;
+    margin: 0.25rem 0 0;
     color: var(--text-soft);
-    font-size: 1rem;
+    font-size: 0.92rem;
     font-weight: 600;
   }
 
   .contact-line {
     text-align: right;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--text-soft);
+    line-height: 1.6;
   }
 
   .contact-line a {
@@ -69,33 +73,27 @@
     border-bottom: 1px solid var(--border);
   }
 
-  section {
-    margin-top: 2.1rem;
-  }
+  section { margin-top: 1.3rem; }
 
   section > h2 {
-    margin: 0 0 0.9rem;
-    font-size: 0.72rem;
+    margin: 0 0 0.6rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-soft);
     border-bottom: 1px solid var(--border);
-    padding-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
   }
 
-  .summary {
-    margin: 0;
-    font-size: 0.95rem;
-  }
+  .summary { margin: 0; font-size: 0.92rem; }
 
-  .entry {
-    margin-bottom: 1.3rem;
-  }
+  .skills-grid p { margin: 0 0 0.35rem; font-size: 0.86rem; }
+  .skills-grid p:last-child { margin-bottom: 0; }
+  .skills-grid strong { font-weight: 750; }
 
-  .entry:last-child {
-    margin-bottom: 0;
-  }
+  .entry { margin-bottom: 1rem; }
+  .entry:last-child { margin-bottom: 0; }
 
   .entry-header {
     display: flex;
@@ -105,70 +103,45 @@
     align-items: baseline;
   }
 
-  .entry-title {
-    font-weight: 750;
-    font-size: 0.98rem;
-  }
-
-  .entry-subtitle {
-    color: var(--text-soft);
-    font-size: 0.85rem;
-  }
+  .entry-title { font-weight: 750; font-size: 0.95rem; }
+  .entry-subtitle { color: var(--text-soft); font-size: 0.82rem; }
+  .entry-tech { color: var(--text-soft); font-size: 0.78rem; font-family: var(--font-mono); margin: 0.1rem 0 0.4rem; }
 
   .entry-meta {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--text-soft);
     white-space: nowrap;
   }
 
-  .entry ul {
-    margin: 0.5rem 0 0;
-    padding-left: 1.1rem;
-  }
-
-  .entry li {
-    margin-bottom: 0.3rem;
-    font-size: 0.88rem;
-    color: var(--text-soft);
-  }
+  .entry ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+  .entry li { margin-bottom: 0.22rem; font-size: 0.85rem; color: var(--text-soft); }
 
   .todo {
     color: #a8341c;
     font-weight: 700;
     background: #fdecea;
-    padding: 0.05rem 0.35rem;
+    padding: 0.03rem 0.3rem;
     border-radius: 0.3rem;
   }
 
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8rem 2rem;
-  }
-
-  .skills-group h3 {
-    margin: 0 0 0.3rem;
-    font-size: 0.8rem;
-    font-weight: 750;
-  }
-
-  .skills-group p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-soft);
-  }
+  .links-line { font-size: 0.85rem; }
+  .links-line a { color: var(--text); }
 
   @media print {
+    @page { size: Letter; margin: 11mm; }
+    html { font-size: 10.3px; }
     body { background: #ffffff; padding: 0; }
     .page { border: 0; padding: 0; max-width: none; }
+    section { margin-top: 0.85rem; }
+    .entry { margin-bottom: 0.6rem; }
+    .todo { background: none; padding: 0; }
   }
 
   @media (max-width: 640px) {
     .page { padding: 1.5rem; }
     header.cv-header { flex-direction: column; align-items: flex-start; }
     .contact-line { text-align: left; }
-    .skills-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -178,122 +151,133 @@
   <header class="cv-header">
     <div>
       <h1>Miguel Luna</h1>
-      <p class="role">Full Stack Developer — Python / Django · Angular / React · TypeScript</p>
+      <p class="role">Full Stack Developer — Python/Django · Angular/React · AI &amp; Automation</p>
     </div>
     <div class="contact-line">
       <div><a href="mailto:migueluna2307@gmail.com">migueluna2307@gmail.com</a></div>
-      <div><a href="https://github.com/DrogzDev" target="_blank" rel="noreferrer">github.com/DrogzDev</a></div>
-      <div><span class="todo">[AGREGAR: ciudad/país, teléfono si se quiere incluir]</span></div>
+      <div><a href="https://github.com/DrogzDev" target="_blank" rel="noreferrer">github.com/DrogzDev</a> · <a href="https://portfolio-miguel-luna.vercel.app/" target="_blank" rel="noreferrer">portfolio-miguel-luna.vercel.app</a></div>
+      <div><a href="https://www.linkedin.com/in/miguel-luna-9a1765272/" target="_blank" rel="noreferrer">linkedin.com/in/miguel-luna-9a1765272</a></div>
+      <div>Caracas, Venezuela — Available remote or on-site in Caracas</div>
     </div>
   </header>
 
   <section>
-    <h2>Resumen profesional</h2>
+    <h2>Professional Summary</h2>
     <p class="summary">
-      Desarrollador Full Stack especializado en Angular, Django y Python. Construyo sistemas completos
-      —frontend, backend, base de datos y despliegue— entendiendo primero el problema de negocio antes de
-      escribir código. Experiencia real con dashboards, inventario, facturación, datos financieros en tiempo
-      real, tareas programadas en segundo plano, notificaciones e integraciones con APIs externas.
+      Full Stack Developer specialized in Python/Django and Angular/React, focused on building complete systems
+      rather than isolated interfaces. Experience designing REST APIs, background job processing with Celery and
+      Redis, and integrating a local LLM (Ollama) for automated data analysis in a production SaaS platform.
+      Delivered a full inventory management system for a real institutional client, covering data modeling, role-based
+      permissions, and deployment.
     </p>
   </section>
 
   <section>
-    <h2>Experiencia</h2>
-    <div class="entry">
-      <div class="entry-header">
-        <div>
-          <div class="entry-title">Ministerio del Poder Popular para Hábitat y Vivienda</div>
-          <div class="entry-subtitle">
-            <span class="todo">[AGREGAR: cargo/rol exacto]</span> ·
-            <span class="todo">[AGREGAR: modalidad — freelance / contrato / empleado]</span>
-          </div>
-        </div>
-        <div class="entry-meta"><span class="todo">[AGREGAR: fechas exactas]</span></div>
-      </div>
-      <ul>
-        <li>Diseñé un flujo de importación masiva de inventario desde Excel con un paso de revisión (existente / nuevo / a revisar / con error) antes de escribir cualquier cambio en base de datos, evitando corromper el stock real de un sistema institucional en producción.</li>
-        <li>Implementé permisos por rol (Administrador, Director, Almacenista) sobre Django Groups, con acceso denegado por defecto si un usuario no tiene exactamente un rol asignado.</li>
-        <li>Construí el frontend en Angular y la API en Django REST Framework para gestión de inventario, almacenes, movimientos de stock, hojas de ruta y notas de entrega.</li>
-        <li><span class="todo">[AGREGAR MÉTRICA REAL: número de productos/movimientos gestionados, si se puede compartir]</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>Proyectos seleccionados</h2>
-
-    <div class="entry">
-      <div class="entry-header">
-        <div>
-          <div class="entry-title">Venecambio — plataforma financiera (Django, Celery, Redis, Ollama, React)</div>
-        </div>
-        <div class="entry-meta"><span class="todo">[AGREGAR: fecha]</span></div>
-      </div>
-      <ul>
-        <li>Diseñé un analizador de mercado con IA local (Ollama) donde el modelo solo redacta el texto de tendencia/riesgo/mejores horas — nunca calcula cifras, que Django resuelve de forma determinista antes de entregárselas, evitando que un LLM invente métricas financieras.</li>
-        <li>Implementé tareas periódicas con Celery Beat y Redis (captura de precios de Binance P2P cada 5 minutos, cierres diarios, reconciliación de alertas) para mantener un histórico de precios siempre actualizado sin bloquear la aplicación.</li>
-        <li>Integré un listener de Telegram (Telethon) que detecta alertas bancarias en tiempo real y las distribuye por Web Push y Firebase Cloud Messaging, incluyendo una app Android empaquetada con Capacitor.</li>
-      </ul>
-    </div>
-
-    <div class="entry">
-      <div class="entry-header">
-        <div>
-          <div class="entry-title">Sistema POS — tienda de calzado (Angular, Django REST Framework, PostgreSQL)</div>
-        </div>
-        <div class="entry-meta"><span class="todo">[AGREGAR: fecha]</span></div>
-      </div>
-      <ul>
-        <li>Modelé el dominio de ventas (productos, variantes por talla/color, stock por tienda, ventas y líneas de venta) para un negocio con múltiples locales.</li>
-        <li>Implementé congelamiento de tasa de cambio por venta (USD/bolívares), incluyendo integración con la API de Venecambio como fuente de tasas.</li>
-        <li>Construí un dashboard de rentabilidad e inventario con alertas de stock bajo por variante y almacén.</li>
-      </ul>
-    </div>
-
-    <div class="entry">
-      <div class="entry-header">
-        <div>
-          <div class="entry-title">Care Perro's House — producto de marca (Astro, React, GSAP, Leaflet)</div>
-        </div>
-        <div class="entry-meta"><span class="todo">[AGREGAR: fecha]</span></div>
-      </div>
-      <ul>
-        <li>Diseñé e implementé una experiencia de marca interactiva con animaciones GSAP/ScrollTrigger y una mascota que responde al cursor, siempre respetando la preferencia de movimiento reducido del usuario.</li>
-        <li>Integré un mapa real (Leaflet + OpenStreetMap) para la ubicación del negocio en vez de depender de una API de mapas de pago.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>Skills</h2>
+    <h2>Technical Skills</h2>
     <div class="skills-grid">
-      <div class="skills-group">
-        <h3>Frontend</h3>
-        <p>Angular, TypeScript, React, HTML, CSS, GSAP</p>
-      </div>
-      <div class="skills-group">
-        <h3>Backend</h3>
-        <p>Python, Django, Django REST Framework, JWT</p>
-      </div>
-      <div class="skills-group">
-        <h3>Bases de datos</h3>
-        <p>PostgreSQL, SQLite, Redis</p>
-      </div>
-      <div class="skills-group">
-        <h3>DevOps</h3>
-        <p>Celery, Celery Beat, Docker, Podman, Git</p>
-      </div>
+      <p><strong>Languages:</strong> Python, TypeScript, JavaScript, SQL</p>
+      <p><strong>Frontend:</strong> Angular, React, Astro, TypeScript, Tailwind CSS, GSAP, HTML, CSS</p>
+      <p><strong>Backend:</strong> Django, Django REST Framework, REST APIs, JWT Authentication</p>
+      <p><strong>Databases:</strong> PostgreSQL, SQLite, Redis</p>
+      <p><strong>Infrastructure &amp; Automation:</strong> Docker, Podman, Linux, Git, Celery, Celery Beat, Cloudflare Tunnel, Web Scraping</p>
+      <p><strong>AI &amp; Integrations:</strong> Ollama (local LLM), Telegram API (Telethon), Web Push Notifications</p>
+      <p><strong>Mobile:</strong> Capacitor (Android APK packaging), PWA</p>
     </div>
   </section>
 
   <section>
-    <h2>Educación</h2>
-    <p class="summary"><span class="todo">[AGREGAR: título, institución, año]</span></p>
+    <h2>Professional Experience</h2>
+    <div class="entry">
+      <div class="entry-header">
+        <div>
+          <div class="entry-title">Independent Full Stack Developer — Freelance</div>
+          <div class="entry-subtitle">Client: Ministry of Popular Power for Habitat and Housing (Venezuela) — Institutional Inventory Management System</div>
+        </div>
+        <div class="entry-meta">Aug 2026 – Sep 2026</div>
+      </div>
+      <ul>
+        <li>Developed a full-stack inventory management system using Angular, Django, and Django REST Framework for a government institution, covering product catalog, warehouse-level stock, and inventory movement tracking.</li>
+        <li>Designed a role-based access control system (Administrator, Director, Warehouse Operator) enforced through Django Groups and REST API permissions.</li>
+        <li>Built a bulk inventory import pipeline from Excel with a two-step review process — analyze, then confirm — that re-validates the original file server-side before committing any change to production stock.</li>
+        <li>Implemented JWT-based authentication and deployed the system with Docker on Linux.</li>
+      </ul>
+    </div>
   </section>
 
   <section>
-    <h2>Idiomas</h2>
-    <p class="summary"><span class="todo">[AGREGAR: idiomas y nivel]</span></p>
+    <h2>Selected Projects</h2>
+
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">VeneCambio — Financial SaaS Platform</div>
+      </div>
+      <p class="entry-tech">React, Vite, Capacitor, Django, Django REST Framework, SQLite, Redis, Celery, Ollama</p>
+      <ul>
+        <li>Built a production SaaS platform that centralizes official BCV exchange rates, Binance P2P market data (via web scraping), and bank alerts detected from Telegram messages (Telethon) into a single real-time dashboard.</li>
+        <li>Implemented background job processing with Celery and Redis to periodically capture pricing data and maintain a queryable price history without blocking the application.</li>
+        <li>Integrated a local LLM (Ollama) to generate market analysis narratives — trend, risk, and best trading hours — based strictly on metrics pre-computed deterministically by Django, keeping all numeric calculations auditable and separate from the AI layer.</li>
+        <li>Delivered price and bank-alert notifications through Web Push.</li>
+        <li>Packaged the web application as a native Android APK using Capacitor, in addition to the web version.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">POS / Inventory Management System</div>
+      </div>
+      <p class="entry-tech">Angular, Django, Django REST Framework, PostgreSQL</p>
+      <ul>
+        <li>Developed a full-stack point-of-sale and inventory system for a retail business, modeling products, size/color variants, and warehouse-level stock.</li>
+        <li>Built a REST API with Django REST Framework and an Angular frontend for sales, invoicing, and inventory control.</li>
+        <li>Implemented dual-currency support (USD/VES) for invoicing and payments.</li>
+        <li>Deployed a live functional demo.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">Restaurant / Food Business Website</div>
+      </div>
+      <p class="entry-tech">Astro, Tailwind CSS, GSAP, Leaflet, OpenStreetMap</p>
+      <ul>
+        <li>Designed and built a responsive brand website for a food business, including a scroll-animated hero section (GSAP) and an animated product showcase slider.</li>
+        <li>Integrated an interactive location map (Leaflet + OpenStreetMap) linked to Google Maps directions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <p class="summary">High School Diploma (Bachillerato) — U.E Colegio San Jorge, Caracas, Venezuela (2009 – 2020)</p>
+  </section>
+
+  <section>
+    <h2>Certifications</h2>
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">Curso Intensivo de Model Context Protocol — midu.dev</div>
+        <div class="entry-meta">Jan 2026</div>
+      </div>
+      <p class="entry-tech">Verify: <a href="https://certificados.midudev.com/43dd62b8-ac57-4655-b8a9-650b8f2d471d.pdf" target="_blank" rel="noreferrer">certificados.midudev.com/43dd62b8-ac57-4655-b8a9-650b8f2d471d.pdf</a></p>
+    </div>
+    <div class="entry">
+      <div class="entry-header">
+        <div class="entry-title">Curso de Tailwind desde Cero — midu.dev</div>
+        <div class="entry-meta">Jun 2025</div>
+      </div>
+      <p class="entry-tech">Verify: <a href="https://certificados.midudev.com/ba526244-98c3-4989-8499-66cb8d4e8316.pdf" target="_blank" rel="noreferrer">certificados.midudev.com/ba526244-98c3-4989-8499-66cb8d4e8316.pdf</a></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Links</h2>
+    <p class="links-line">
+      GitHub: <a href="https://github.com/DrogzDev" target="_blank" rel="noreferrer">github.com/DrogzDev</a><br>
+      LinkedIn: <a href="https://www.linkedin.com/in/miguel-luna-9a1765272/" target="_blank" rel="noreferrer">linkedin.com/in/miguel-luna-9a1765272</a><br>
+      Portfolio: <a href="https://portfolio-miguel-luna.vercel.app/" target="_blank" rel="noreferrer">portfolio-miguel-luna.vercel.app</a><br>
+      Live Demo (POS): <a href="https://demo.noctesystems.online/" target="_blank" rel="noreferrer">demo.noctesystems.online</a><br>
+      Live Demo (VeneCambio): <a href="https://venecambio.lat/" target="_blank" rel="noreferrer">venecambio.lat</a>
+    </p>
   </section>
 
 </div>
