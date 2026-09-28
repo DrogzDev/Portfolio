@@ -46,7 +46,7 @@ export class HomeComponent {
   // Datos
   readonly projects = computed(() => projectsFor(this.i18n.lang()));
   readonly currentYear = new Date().getFullYear();
-  readonly email = 'migueluna33@gmail.com';
+  readonly email = 'migueluna2307@gmail.com';
   readonly cvUrl = computed(() =>
     this.i18n.lang() === 'en' ? '/cv/miguel-luna-cv-en.pdf' : '/cv/miguel-luna-cv.pdf'
   );
