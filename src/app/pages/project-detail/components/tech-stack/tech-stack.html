@@ -1,6 +1,6 @@
 <section class="detail-section">
-  <h2>Stack completo</h2>
-  <div class="tech-stack-list" aria-label="Tecnologías utilizadas">
+  <h2>{{ content().projectDetail.techStackHeading }}</h2>
+  <div class="tech-stack-list" [attr.aria-label]="content().projectDetail.techStackAriaLabel">
     @for (technology of technologies(); track technology) {
       <span>{{ technology }}</span>
     }

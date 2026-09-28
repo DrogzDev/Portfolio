@@ -1,9 +1,9 @@
-<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<a class="skip-link" href="#contenido">{{ content().skipLink }}</a>
 <div class="scroll-progress" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="header-container">
-    <a class="brand" href="#inicio" aria-label="Ir al inicio" (click)="closeMenu()">
+    <a class="brand" href="#inicio" [attr.aria-label]="content().header.brandAriaLabel" (click)="closeMenu()">
       <span>DROGZ</span>
       <strong>DEV</strong>
     </a>
@@ -11,7 +11,7 @@
     <button
       class="menu-button"
       type="button"
-      [attr.aria-label]="menuOpen() ? 'Cerrar menú' : 'Abrir menú'"
+      [attr.aria-label]="menuOpen() ? content().header.closeMenu : content().header.openMenu"
       [attr.aria-expanded]="menuOpen()"
       aria-controls="main-navigation"
       (click)="toggleMenu()"
@@ -23,14 +23,14 @@
     <nav
       id="main-navigation"
       class="navigation"
-      aria-label="Navegación principal"
+      [attr.aria-label]="content().header.mainNav"
       [class.is-open]="menuOpen()"
     >
-      <a href="#proyectos" (click)="closeMenu()">Proyectos</a>
-      <a href="#capacidades" (click)="closeMenu()">Stack</a>
-      <a href="#sobre-mi" (click)="closeMenu()">Sobre mí</a>
-      <a href="#contacto" (click)="closeMenu()">Contacto</a>
-      <a class="navigation-cv" [href]="cvUrl" target="_blank" rel="noreferrer" (click)="closeMenu()">Descargar CV</a>
+      <a href="#proyectos" (click)="closeMenu()">{{ content().header.projects }}</a>
+      <a href="#capacidades" (click)="closeMenu()">{{ content().header.stack }}</a>
+      <a href="#sobre-mi" (click)="closeMenu()">{{ content().header.about }}</a>
+      <a href="#contacto" (click)="closeMenu()">{{ content().header.contact }}</a>
+      <a class="navigation-cv" [href]="cvUrl" target="_blank" rel="noreferrer" (click)="closeMenu()">{{ content().header.downloadCv }}</a>
     </nav>
   </div>
 </header>
@@ -41,20 +41,20 @@
     <div class="hero-copy">
       <div class="eyebrow">
         <span class="eyebrow-dot" aria-hidden="true"></span>
-        Full Stack Developer
+        {{ content().hero.eyebrow }}
       </div>
-      <h1>Interfaces claras. <span>Sistemas completos.</span></h1>
+      <h1>{{ content().hero.titleStart }} <span>{{ content().hero.titleHighlight }}</span></h1>
       <p class="hero-description">
-        Construyo aplicaciones con Angular y Django para transformar datos, inventario, ventas y alertas en productos que las personas realmente pueden utilizar.
+        {{ content().hero.description }}
       </p>
       <div class="hero-actions">
-        <a class="button button-primary" href="#proyectos">Ver proyectos <span aria-hidden="true">↓</span></a>
-        <a class="button button-secondary" [href]="cvUrl" target="_blank" rel="noreferrer">Descargar CV <span aria-hidden="true">↗</span></a>
+        <a class="button button-primary" href="#proyectos">{{ content().hero.viewProjects }} <span aria-hidden="true">↓</span></a>
+        <a class="button button-secondary" [href]="cvUrl" target="_blank" rel="noreferrer">{{ content().hero.downloadCv }} <span aria-hidden="true">↗</span></a>
       </div>
       <div class="hero-meta">
-        <div><strong>Datos en tiempo real</strong><span>Alertas e históricos</span></div>
-        <div><strong>Automatización</strong><span>Redis y Celery</span></div>
-        <div><strong>Desarrollo end‑to‑end</strong><span>Angular y Django</span></div>
+        <div><strong>{{ content().hero.meta.realtimeTitle }}</strong><span>{{ content().hero.meta.realtimeDescription }}</span></div>
+        <div><strong>{{ content().hero.meta.automationTitle }}</strong><span>{{ content().hero.meta.automationDescription }}</span></div>
+        <div><strong>{{ content().hero.meta.endToEndTitle }}</strong><span>{{ content().hero.meta.endToEndDescription }}</span></div>
       </div>
     </div>
 
@@ -65,7 +65,7 @@
       role="button"
       tabindex="0"
       [attr.aria-pressed]="showPortrait"
-      [attr.aria-label]="showPortrait ? 'Volver a mostrar el código' : 'Ejecutar el código y mostrar el retrato'"
+      [attr.aria-label]="showPortrait ? content().hero.hidePortraitAriaLabel : content().hero.showPortraitAriaLabel"
       (click)="toggleHeroVisual()"
       (keydown)="handleHeroVisualKeydown($event)"
     >
@@ -75,8 +75,8 @@
         <div class="window-controls" aria-hidden="true">
           <span></span><span></span><span></span>
         </div>
-        <span class="visual-file">{{ showPortrait ? 'developer.rendered.png' : 'portfolio.config.ts' }}</span>
-        <span class="visual-action">{{ showPortrait ? 'Ver código ↺' : 'Ejecutar ↗' }}</span>
+        <span class="visual-file">{{ showPortrait ? content().hero.portraitFileName : content().hero.codeFileName }}</span>
+        <span class="visual-action">{{ showPortrait ? content().hero.viewCodeAction : content().hero.runAction }}</span>
       </div>
 
       @if (!showPortrait) {
@@ -125,7 +125,7 @@
             <img
               class="hero-portrait-image"
               src="/yoldan.png"
-              alt="Retrato de Miguel Luna, desarrollador Full Stack"
+              [alt]="content().hero.portraitAlt"
               width="1000"
               height="1250"
               loading="eager"
@@ -135,11 +135,11 @@
           </div>
           <div class="hero-render-badge">
             <span class="status-indicator" aria-hidden="true"></span>
-            Build successful
+            {{ content().hero.buildSuccessful }}
           </div>
           <div class="hero-portrait-caption">
             <div>
-              <span>Developer rendered</span>
+              <span>{{ content().hero.developerRendered }}</span>
               <strong>Miguel Luna</strong>
             </div>
             <span class="portrait-index">01 / 01</span>
@@ -149,13 +149,13 @@
 
       <div class="visual-status" aria-live="polite">
         <span class="status-indicator" aria-hidden="true"></span>
-        <span>{{ showPortrait ? 'Render completado. Haz clic para volver.' : 'Haz clic para ejecutar el perfil.' }}</span>
+        <span>{{ showPortrait ? content().hero.statusDone : content().hero.statusRunning }}</span>
       </div>
     </div>
   </section>
 
   <!-- MARQUEE -->
-  <section class="tech-marquee" aria-label="Tecnologías principales">
+  <section class="tech-marquee" [attr.aria-label]="content().marqueeAriaLabel">
     <div class="tech-track">
       @for (group of [marqueeSkills, marqueeSkills]; track $index) {
         <div class="tech-group" [attr.aria-hidden]="$index === 1">
@@ -169,10 +169,10 @@
 
   <!-- INTRO -->
   <section class="intro section-container">
-    <p class="section-label">Perfil</p>
+    <p class="section-label">{{ content().intro.label }}</p>
     <div class="intro-content">
-      <h2>Ideas convertidas en productos funcionales.</h2>
-      <p>Me especializo en construir aplicaciones completas con interfaces modernas, APIs estructuradas, automatizaciones y datos actualizados en tiempo real.</p>
+      <h2>{{ content().intro.heading }}</h2>
+      <p>{{ content().intro.body }}</p>
     </div>
   </section>
 
@@ -180,14 +180,14 @@
   <section id="proyectos" class="projects section-container">
     <div class="section-heading">
       <div>
-        <p class="section-label">Trabajo seleccionado</p>
-        <h2>Proyectos reales</h2>
+        <p class="section-label">{{ content().projectsSection.label }}</p>
+        <h2>{{ content().projectsSection.heading }}</h2>
       </div>
-      <p>Productos en los que trabajé tanto la experiencia visual como la arquitectura, la lógica del sistema y su infraestructura.</p>
+      <p>{{ content().projectsSection.body }}</p>
     </div>
 
     <div class="projects-list">
-      @for (project of projects; track project.slug) {
+      @for (project of projects(); track project.slug) {
         <article class="project-card">
           <div class="project-media">
             <div class="project-media-header">
@@ -208,27 +208,24 @@
               <span class="project-number">{{ project.number }}</span>
             </div>
             <p class="project-summary">{{ project.summary }}</p>
-            <p class="project-role"><strong>Mi rol:</strong> {{ project.role }}</p>
+            <p class="project-role"><strong>{{ content().projectsSection.myRole }}</strong> {{ project.role }}</p>
             <ul class="project-key-features">
               @for (feature of project.keyFeatures; track feature) {
                 <li>{{ feature }}</li>
               }
             </ul>
-            <div class="technology-list" aria-label="Tecnologías principales">
+            <div class="technology-list" [attr.aria-label]="content().projectsSection.primaryTechAriaLabel">
               @for (technology of project.primaryTechnologies; track technology) {
                 <span>{{ technology }}</span>
               }
             </div>
-            <div class="project-links">
-              <a [routerLink]="['/projects', project.slug]">
-                Ver caso de estudio <span aria-hidden="true">→</span>
-              </a>
-              @if (primaryExternalLink(project); as liveLink) {
+            @if (primaryExternalLink(project); as liveLink) {
+              <div class="project-links">
                 <a [href]="liveLink.url" target="_blank" rel="noreferrer">
                   {{ liveLink.label }} <span aria-hidden="true">↗</span>
                 </a>
-              }
-            </div>
+              </div>
+            }
           </div>
         </article>
       }
@@ -240,14 +237,14 @@
     <div class="section-container">
       <div class="section-heading section-heading-light">
         <div>
-          <p class="section-label">Capacidades</p>
-          <h2>Del frontend al despliegue.</h2>
+          <p class="section-label">{{ content().capabilities.label }}</p>
+          <h2>{{ content().capabilities.heading }}</h2>
         </div>
-        <p>Puedo trabajar un producto como un sistema completo, no solamente como una colección de pantallas independientes.</p>
+        <p>{{ content().capabilities.body }}</p>
       </div>
 
       <div class="capabilities-grid">
-        @for (capability of capabilities; track capability.number) {
+        @for (capability of capabilities(); track capability.number) {
           <article class="capability-card">
             <span class="capability-number">{{ capability.number }}</span>
             <h3>{{ capability.title }}</h3>
@@ -267,14 +264,14 @@
   <section class="workflow section-container">
     <div class="section-heading">
       <div>
-        <p class="section-label">Proceso</p>
-        <h2>Cómo construyo</h2>
+        <p class="section-label">{{ content().workflow.label }}</p>
+        <h2>{{ content().workflow.heading }}</h2>
       </div>
-      <p>Un proceso directo para evitar desarrollar funciones que no resuelvan el problema real.</p>
+      <p>{{ content().workflow.body }}</p>
     </div>
 
     <div class="workflow-list">
-      @for (step of workflow; track step.number) {
+      @for (step of workflow(); track step.number) {
         <article class="workflow-item">
           <span>{{ step.number }}</span>
           <h3>{{ step.title }}</h3>
@@ -287,18 +284,18 @@
   <!-- SOBRE MÍ -->
   <section id="sobre-mi" class="about section-container">
     <div class="about-heading">
-      <p class="section-label">Sobre mí</p>
-      <h2>Desarrollo con mentalidad de producto.</h2>
+      <p class="section-label">{{ content().about.label }}</p>
+      <h2>{{ content().about.heading }}</h2>
     </div>
 
     <div class="about-content">
-      <p class="about-lead">Soy Miguel, desarrollador Full Stack especializado en Angular, Django y Python.</p>
+      <p class="about-lead">{{ content().about.lead }}</p>
       <div class="about-copy">
-        <p>Me gusta entender cómo funciona un negocio antes de comenzar a escribir código. Eso me permite crear interfaces y sistemas que resuelven tareas reales y no solamente se ven bien.</p>
-        <p>He trabajado con dashboards, inventario, facturación, datos financieros, tareas programadas, notificaciones y aplicaciones conectadas a diferentes APIs.</p>
-        <p>Mi enfoque combina diseño de interfaces, arquitectura frontend, desarrollo backend y despliegue para mantener una visión completa del producto.</p>
+        @for (paragraph of content().about.paragraphs; track $index) {
+          <p>{{ paragraph }}</p>
+        }
         <a [href]="githubUrl" target="_blank" rel="noreferrer">
-          Ver perfil de GitHub <span aria-hidden="true">↗</span>
+          {{ content().about.githubCta }} <span aria-hidden="true">↗</span>
         </a>
       </div>
     </div>
@@ -307,9 +304,9 @@
   <!-- CONTACTO -->
   <section id="contacto" class="contact">
     <div class="section-container contact-container">
-      <p class="section-label">Contacto</p>
-      <h2>¿Tienes una idea que necesita convertirse en producto?</h2>
-      <p>Podemos hablar sobre el proyecto, sus necesidades y la mejor manera de construir una primera versión funcional.</p>
+      <p class="section-label">{{ content().contact.label }}</p>
+      <h2>{{ content().contact.heading }}</h2>
+      <p>{{ content().contact.body }}</p>
       <a class="contact-link" [href]="'mailto:' + email">{{ email }} <span aria-hidden="true">↗</span></a>
 
       <div class="contact-footer">

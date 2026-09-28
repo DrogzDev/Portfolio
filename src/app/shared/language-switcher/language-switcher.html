@@ -1,0 +1,26 @@
+<div
+  #group
+  role="radiogroup"
+  [attr.aria-label]="lang.content().languageSwitcher.groupAriaLabel"
+  class="jelly-radio language-switcher"
+>
+  @for (opt of options; track opt.value; let i = $index) {
+    <button
+      #chip
+      type="button"
+      role="radio"
+      [attr.aria-checked]="isActive(i)"
+      [attr.data-on]="isActive(i) ? 'true' : 'false'"
+      [attr.aria-label]="opt.flagAlt"
+      [tabindex]="isActive(i) ? 0 : -1"
+      class="jelly-radio__chip"
+      (click)="select(i, $event)"
+      (keydown)="onKeyDown($event, i)"
+    >
+      <span class="jelly-radio__skin">
+        <span class="jelly-radio__flag" [innerHTML]="opt.flag"></span>
+        <span class="jelly-radio__label">{{ opt.label }}</span>
+      </span>
+    </button>
+  }
+</div>

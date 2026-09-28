@@ -1,5 +1,5 @@
-<section class="detail-section architecture" [attr.aria-label]="'Arquitectura de ' + projectTitle()">
-  <h2>Arquitectura</h2>
+<section class="detail-section architecture" [attr.aria-label]="content().projectDetail.architectureAriaLabel(projectTitle())">
+  <h2>{{ content().projectDetail.architectureHeading }}</h2>
   <p class="architecture-summary">{{ architecture().summary }}</p>
 
   <div class="architecture-diagram" [class.is-steps]="architecture().layout === 'steps'">
@@ -24,7 +24,7 @@
               <span class="architecture-connector-label">{{ label }}</span>
             }
           } @else {
-            <span class="architecture-connector-label architecture-connector-label-muted">sin conexión todavía</span>
+            <span class="architecture-connector-label architecture-connector-label-muted">{{ content().projectDetail.noConnectionYet }}</span>
           }
         </div>
       }

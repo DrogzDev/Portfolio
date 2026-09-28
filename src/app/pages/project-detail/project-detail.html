@@ -1,9 +1,9 @@
 @if (project(); as project) {
-  <a class="skip-link" href="#detalle">Saltar al contenido</a>
+  <a class="skip-link" href="#detalle">{{ content().projectDetail.skipLink }}</a>
 
   <div class="project-detail-nav section-container">
     <a class="back-link" routerLink="/">
-      <span aria-hidden="true">←</span> Volver al inicio
+      <span aria-hidden="true">←</span> {{ content().projectDetail.backToHome }}
     </a>
   </div>
 
@@ -20,7 +20,7 @@
 
       @if (project.results; as results) {
         <section class="detail-section">
-          <h2>Resultado</h2>
+          <h2>{{ content().projectDetail.resultsHeading }}</h2>
           <ul class="results-list">
             @for (result of results; track result) {
               <li>{{ result }}</li>
@@ -31,7 +31,7 @@
 
       @if (project.gallery; as gallery) {
         <section class="detail-section">
-          <h2>Galería</h2>
+          <h2>{{ content().projectDetail.galleryHeading }}</h2>
           <app-project-gallery [images]="gallery" [title]="project.title" />
         </section>
       }
@@ -39,8 +39,8 @@
   </main>
 } @else {
   <div class="project-not-found section-container">
-    <h1>Proyecto no encontrado</h1>
-    <p>El proyecto que buscas no existe o fue movido.</p>
-    <a routerLink="/">Volver al inicio</a>
+    <h1>{{ content().projectDetail.notFoundTitle }}</h1>
+    <p>{{ content().projectDetail.notFoundBody }}</p>
+    <a routerLink="/">{{ content().projectDetail.backToHome }}</a>
   </div>
 }

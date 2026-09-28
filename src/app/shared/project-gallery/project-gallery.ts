@@ -8,8 +8,10 @@ import {
   input,
   signal
 } from '@angular/core';
+import { computed } from '@angular/core';
 import { gsap } from 'gsap';
 import { ProjectGalleryImage } from '../../core/models/project.model';
+import { LanguageService } from '../../core/i18n/language.service';
 
 const AUTOPLAY_DELAY = 4500;
 
@@ -26,6 +28,8 @@ export class ProjectGalleryComponent {
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
+  readonly i18n = inject(LanguageService);
+  readonly content = computed(() => this.i18n.content());
 
   readonly activeIndex = signal(0);
   readonly lightboxOpen = signal(false);

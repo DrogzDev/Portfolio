@@ -8,9 +8,9 @@
   <h1>{{ project().title }}</h1>
 
   <p class="project-hero-summary">{{ project().summary }}</p>
-  <p class="project-hero-role"><strong>Mi rol:</strong> {{ project().role }}</p>
+  <p class="project-hero-role"><strong>{{ content().projectDetail.myRole }}</strong> {{ project().role }}</p>
 
-  <div class="project-hero-stack" aria-label="Tecnologías principales">
+  <div class="project-hero-stack" [attr.aria-label]="content().projectDetail.primaryTechAriaLabel">
     @for (technology of project().primaryTechnologies; track technology) {
       <span>{{ technology }}</span>
     }

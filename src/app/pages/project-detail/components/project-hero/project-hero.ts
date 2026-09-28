@@ -1,13 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { PortfolioProject, ProjectStatus } from '../../../../core/models/project.model';
 import { ProjectLinksComponent } from '../project-links/project-links';
-
-const STATUS_LABEL: Record<ProjectStatus, string> = {
-  live: 'En producción',
-  demo: 'Demo pública',
-  private: 'Proyecto privado',
-  'in-development': 'En desarrollo'
-};
+import { LanguageService } from '../../../../core/i18n/language.service';
 
 @Component({
   selector: 'app-project-hero',
@@ -18,8 +12,10 @@ const STATUS_LABEL: Record<ProjectStatus, string> = {
 })
 export class ProjectHeroComponent {
   readonly project = input.required<PortfolioProject>();
+  readonly i18n = inject(LanguageService);
+  readonly content = computed(() => this.i18n.content());
 
   statusLabel(status: ProjectStatus): string {
-    return STATUS_LABEL[status];
+    return this.content().projectDetail.statusLabel[status];
   }
 }

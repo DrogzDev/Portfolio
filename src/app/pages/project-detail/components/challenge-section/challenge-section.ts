@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
+import { LanguageService } from '../../../../core/i18n/language.service';
 
 @Component({
   selector: 'app-challenge-section',
@@ -9,4 +10,6 @@ import { Component, input } from '@angular/core';
 })
 export class ChallengeSectionComponent {
   readonly challenge = input.required<string>();
+  readonly i18n = inject(LanguageService);
+  readonly content = computed(() => this.i18n.content());
 }

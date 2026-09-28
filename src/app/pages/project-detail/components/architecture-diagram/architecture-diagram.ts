@@ -1,5 +1,6 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { ProjectArchitecture } from '../../../../core/models/project.model';
+import { LanguageService } from '../../../../core/i18n/language.service';
 
 interface DiagramNode {
   id: string;
@@ -22,6 +23,8 @@ interface DiagramGroup {
 export class ArchitectureDiagramComponent {
   readonly architecture = input.required<ProjectArchitecture>();
   readonly projectTitle = input.required<string>();
+  readonly i18n = inject(LanguageService);
+  readonly content = computed(() => this.i18n.content());
 
   readonly groups = computed<DiagramGroup[]>(() => {
     const order: string[] = [];

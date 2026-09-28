@@ -7,20 +7,21 @@ import {
   inject,
   signal
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { PROJECTS } from '../../data/projects.data';
+import { projectsFor } from '../../data/projects.data';
 import { PortfolioProject, ProjectLink } from '../../core/models/project.model';
 import { SeoService } from '../../core/services/seo.service';
 import { ProjectGalleryComponent } from '../../shared/project-gallery/project-gallery';
+import { LanguageService } from '../../core/i18n/language.service';
+import { computed, effect } from '@angular/core';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ProjectGalleryComponent],
+  imports: [ProjectGalleryComponent],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -29,6 +30,8 @@ export class HomeComponent {
   private readonly seo = inject(SeoService);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
+  readonly i18n = inject(LanguageService);
+  readonly content = computed(() => this.i18n.content());
 
   // Constantes de animación
   private readonly HERO_SWAP_DURATION = 0.22;
@@ -41,31 +44,30 @@ export class HomeComponent {
   readonly portraitVisible = signal(false);
 
   // Datos
-  readonly projects = PROJECTS;
+  readonly projects = computed(() => projectsFor(this.i18n.lang()));
   readonly currentYear = new Date().getFullYear();
   readonly email = 'migueluna33@gmail.com';
   readonly cvUrl = '/cv/miguel-luna-cv.pdf';
   readonly githubUrl = 'https://github.com/DrogzDev';
   readonly marqueeSkills = ['Angular', 'TypeScript', 'Python', 'Django', 'REST APIs', 'PostgreSQL', 'Redis', 'Celery', 'Web Push', 'GSAP'] as const;
-  readonly capabilities = [
-    { number: '01', title: 'Frontend', description: 'Interfaces responsive y accesibles construidas con Angular, TypeScript y CSS moderno.', technologies: ['Angular', 'TypeScript', 'HTML', 'CSS'] },
-    { number: '02', title: 'Backend', description: 'APIs, autenticación, lógica de negocio y procesamiento de datos con Python y Django.', technologies: ['Python', 'Django', 'DRF', 'PostgreSQL'] },
-    { number: '03', title: 'DevOps', description: 'Tareas programadas, caché, procesos en segundo plano, contenedores y despliegue.', technologies: ['Redis', 'Celery', 'Podman', 'Git'] }
-  ] as const;
-  readonly workflow = [
-    { number: '01', title: 'Entender', description: 'Defino el problema, los usuarios y la información que realmente necesita el producto.' },
-    { number: '02', title: 'Diseñar', description: 'Organizo la experiencia, los componentes y la arquitectura antes de desarrollar.' },
-    { number: '03', title: 'Construir', description: 'Desarrollo la interfaz, la API, la base de datos y las integraciones necesarias.' },
-    { number: '04', title: 'Mejorar', description: 'Pruebo el producto, corrijo problemas y optimizo rendimiento y usabilidad.' }
-  ] as const;
+  readonly capabilities = computed(() => this.content().capabilities.items);
+  readonly workflow = computed(() => this.content().workflow.items);
 
   constructor() {
-    this.seo.update({
-      title: 'Miguel Luna | Full Stack Developer',
-      description: 'Full Stack Developer especializado en Angular y Django. Construyo aplicaciones de datos en tiempo real, inventario, ventas y automatización backend.',
-      path: '/',
-      image: '/yoldan.png',
-      imageAlt: 'Retrato de Miguel Luna, desarrollador Full Stack'
+    effect(() => {
+      const lang = this.i18n.lang();
+      const isEn = lang === 'en';
+      this.seo.update({
+        title: 'Miguel Luna | Full Stack Developer',
+        description: isEn
+          ? 'Full Stack Developer specialized in Angular and Django. I build real-time data, inventory, sales and backend automation applications.'
+          : 'Full Stack Developer especializado en Angular y Django. Construyo aplicaciones de datos en tiempo real, inventario, ventas y automatización backend.',
+        path: '/',
+        image: '/yoldan.png',
+        imageAlt: isEn
+          ? 'Portrait of Miguel Luna, Full Stack Developer'
+          : 'Retrato de Miguel Luna, desarrollador Full Stack'
+      });
     });
     afterNextRender(() => {
       this.initializeAnimations();

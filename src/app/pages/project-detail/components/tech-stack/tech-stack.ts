@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
+import { LanguageService } from '../../../../core/i18n/language.service';
 
 @Component({
   selector: 'app-tech-stack',
@@ -9,4 +10,6 @@ import { Component, input } from '@angular/core';
 })
 export class TechStackComponent {
   readonly technologies = input.required<string[]>();
+  readonly i18n = inject(LanguageService);
+  readonly content = computed(() => this.i18n.content());
 }

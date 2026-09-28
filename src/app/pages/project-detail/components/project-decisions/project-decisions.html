@@ -1,6 +1,6 @@
 @if (decisions().length) {
   <section class="detail-section">
-    <h2>Decisiones técnicas</h2>
+    <h2>{{ content().projectDetail.decisionsHeading }}</h2>
     <div class="decisions-list">
       @for (decision of decisions(); track decision.title) {
         <article class="decision-card">

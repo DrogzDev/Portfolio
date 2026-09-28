@@ -2,8 +2,8 @@
   class="project-gallery"
   role="region"
   tabindex="0"
-  aria-roledescription="carrusel"
-  [attr.aria-label]="'Galería de ' + title()"
+  aria-roledescription="carousel"
+  [attr.aria-label]="content().gallery.ariaLabel(title())"
   (mouseenter)="pause()"
   (mouseleave)="resume()"
   (keydown)="handleKeydown($event)"
@@ -18,7 +18,7 @@
         <button
           type="button"
           class="project-media-frame"
-          [attr.aria-label]="'Ver imagen en grande: ' + image.label"
+          [attr.aria-label]="content().gallery.viewLarge(image.label)"
           (click)="openLightbox(imageIndex)"
         >
           <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
@@ -36,7 +36,7 @@
     <button
       class="project-gallery-arrow project-gallery-arrow-left"
       type="button"
-      aria-label="Mostrar imagen anterior"
+      [attr.aria-label]="content().gallery.previousImage"
       (click)="previous($event)"
     >
       <span aria-hidden="true">←</span>
@@ -44,18 +44,18 @@
     <button
       class="project-gallery-arrow project-gallery-arrow-right"
       type="button"
-      aria-label="Mostrar imagen siguiente"
+      [attr.aria-label]="content().gallery.nextImage"
       (click)="next($event)"
     >
       <span aria-hidden="true">→</span>
     </button>
 
-    <div class="project-gallery-dots" aria-label="Seleccionar imagen">
+    <div class="project-gallery-dots" [attr.aria-label]="content().gallery.selectImageAriaLabel">
       @for (image of images(); track image.src; let imageIndex = $index) {
         <button
           type="button"
           [class.is-active]="imageIndex === activeIndex()"
-          [attr.aria-label]="'Mostrar ' + image.label"
+          [attr.aria-label]="content().gallery.showImage(image.label)"
           [attr.aria-current]="imageIndex === activeIndex() ? 'true' : null"
           (click)="select(imageIndex, $event)"
         ></button>
@@ -75,11 +75,11 @@
     class="lightbox-overlay"
     role="dialog"
     aria-modal="true"
-    [attr.aria-label]="'Galería de ' + title()"
+    [attr.aria-label]="content().gallery.lightboxAriaLabel(title())"
     (click)="closeLightbox()"
   >
     <div class="lightbox-panel" tabindex="-1" (click)="$event.stopPropagation()">
-      <button type="button" class="lightbox-close" aria-label="Cerrar" (click)="closeLightbox()">
+      <button type="button" class="lightbox-close" [attr.aria-label]="content().gallery.close" (click)="closeLightbox()">
         <span aria-hidden="true">✕</span>
       </button>
 
@@ -88,7 +88,7 @@
           <button
             type="button"
             class="lightbox-nav lightbox-nav-prev"
-            aria-label="Imagen anterior"
+            [attr.aria-label]="content().gallery.previousImageShort"
             (click)="lightboxPrevious()"
           >
             <span aria-hidden="true">←</span>
@@ -101,7 +101,7 @@
           <button
             type="button"
             class="lightbox-nav lightbox-nav-next"
-            aria-label="Imagen siguiente"
+            [attr.aria-label]="content().gallery.nextImageShort"
             (click)="lightboxNext()"
           >
             <span aria-hidden="true">→</span>

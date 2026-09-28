@@ -1,0 +1,153 @@
+:host {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1200;
+  display: block;
+  pointer-events: auto;
+}
+
+.jelly-radio {
+  --jr-chip: rgba(27, 27, 27, 0.92);
+  --jr-active: #d7ff3f;
+  --jr-text: #f7f7f2;
+  --jr-active-text: #111111;
+  --jr-gap: 6px;
+  --jr-radius: 999px;
+  --jr-h: 36px;
+  --jr-font: 12px;
+  --jr-px: 12px;
+  --jr-pad-x: 10px;
+  --jr-pad-y: 6px;
+  --jr-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--jr-gap);
+  padding: var(--jr-pad-y) var(--jr-pad-x);
+  background: rgba(243, 242, 237, 0.75);
+  border: 1px solid rgba(18, 18, 18, 0.14);
+  border-radius: 999px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 30px -18px rgba(18, 18, 18, 0.35);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.jelly-radio__chip {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+  transform-origin: 50% 50%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+
+.jelly-radio__chip[data-on='true'] {
+  cursor: default;
+}
+
+.jelly-radio__chip:focus-visible .jelly-radio__skin {
+  box-shadow: 0 0 0 2px rgba(215, 255, 63, 0.7);
+}
+
+.jelly-radio__skin {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  height: var(--jr-h);
+  padding: 0 var(--jr-px);
+  border-radius: var(--jr-radius);
+  overflow: hidden;
+  background: var(--jr-chip);
+  color: var(--jr-text);
+  font-size: var(--jr-font);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    box-shadow 160ms ease;
+}
+
+.jelly-radio__skin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--jr-text);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .jelly-radio__chip[data-on='false']:not(:disabled):hover .jelly-radio__skin::before {
+    opacity: 0.14;
+  }
+}
+
+.jelly-radio__chip:active .jelly-radio__skin {
+  transform: scale(0.97);
+}
+
+.jelly-radio__chip[data-on='true'] .jelly-radio__skin {
+  background: var(--jr-active);
+  color: var(--jr-active-text);
+}
+
+.jelly-radio__flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 14px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14);
+}
+
+.jelly-radio__flag :global(svg),
+.jelly-radio__flag svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.jelly-radio__label {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jelly-radio__chip:active .jelly-radio__skin {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  :host {
+    top: 0.65rem;
+    right: 0.65rem;
+  }
+  .jelly-radio {
+    --jr-h: 32px;
+    --jr-px: 10px;
+    --jr-font: 11px;
+  }
+  .jelly-radio__flag {
+    width: 18px;
+    height: 12px;
+  }
+}
