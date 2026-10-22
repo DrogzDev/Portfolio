@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "drogzdev-portfolio": {
+    "angsidex-portfolio": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -64,10 +64,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "drogzdev-portfolio:build:production"
+              "buildTarget": "angsidex-portfolio:build:production"
             },
             "development": {
-              "buildTarget": "drogzdev-portfolio:build:development"
+              "buildTarget": "angsidex-portfolio:build:development"
             }
           },
           "defaultConfiguration": "development"

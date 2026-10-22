@@ -175,7 +175,7 @@ export const PROJECTS_ES: PortfolioProject[] = [
 
     links: [
       { label: 'Ver demo', url: 'https://demo.noctesystems.online/', type: 'live' },
-      { label: 'Ver repositorio', url: 'https://github.com/DrogzDev/Tienda-Demo', type: 'repository' }
+      { label: 'Ver repositorio', url: 'https://github.com/Angsidex/Tienda-Demo', type: 'repository' }
     ]
   },
 
@@ -591,7 +591,7 @@ export const PROJECTS_EN: PortfolioProject[] = [
 
     links: [
       { label: 'View demo', url: 'https://demo.noctesystems.online/', type: 'live' },
-      { label: 'View repository', url: 'https://github.com/DrogzDev/Tienda-Demo', type: 'repository' }
+      { label: 'View repository', url: 'https://github.com/Angsidex/Tienda-Demo', type: 'repository' }
     ]
   },
 

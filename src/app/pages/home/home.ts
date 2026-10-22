@@ -50,7 +50,7 @@ export class HomeComponent {
   readonly cvUrl = computed(() =>
     this.i18n.lang() === 'en' ? '/cv/miguel-luna-cv-en.pdf' : '/cv/miguel-luna-cv.pdf'
   );
-  readonly githubUrl = 'https://github.com/DrogzDev';
+  readonly githubUrl = 'https://github.com/Angsidex';
   readonly marqueeSkills = ['Angular', 'TypeScript', 'Python', 'Django', 'REST APIs', 'PostgreSQL', 'Redis', 'Celery', 'Web Push', 'GSAP'] as const;
   readonly capabilities = computed(() => this.content().capabilities.items);
   readonly workflow = computed(() => this.content().workflow.items);

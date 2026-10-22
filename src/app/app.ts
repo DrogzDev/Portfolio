@@ -9,5 +9,5 @@ import { LanguageSwitcherComponent } from './shared/language-switcher/language-s
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('drogzdev-portfolio');
+  protected readonly title = signal('angsidex-portfolio');
 }
