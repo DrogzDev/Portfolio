@@ -324,6 +324,96 @@ export const PROJECTS_ES: PortfolioProject[] = [
     ],
 
     links: []
+  },
+  {
+    slug: 'teterito',
+    number: '05',
+    title: 'Teterito Reborn',
+    category: 'Storefront gaming · Catálogo con IA',
+
+    summary:
+      'Tienda y comunidad gamer con catálogo de equipo, servicios de diseño web y una identidad cyberpunk propia. El catálogo se alimenta de las publicaciones de un canal de WhatsApp que un modelo de IA convierte en fichas de producto.',
+
+    description:
+      'Plataforma full stack para Teterito Reborn, una marca que mezcla gaming, venta de equipo (gear) y diseño web. El frontend es una app Angular con estética cyberpunk, scroll suave (Lenis) y animaciones con GSAP, construida alrededor de una mascota propia. El backend en Django expone el catálogo, la autenticación y un panel de administración propio. La parte distintiva es el flujo de catálogo: un collector externo envía a la API las publicaciones de un canal de WhatsApp (texto e imágenes), que se guardan como publicaciones en bruto y se deduplican por huella; desde el panel, el administrador elige cuáles analizar y un worker con IA local (Ollama) las lee para proponer los campos de un producto —nombre, descripción, categoría, precio— que recién entonces se revisa y publica.',
+
+    challenge:
+      'Convertir publicaciones informales de un canal de WhatsApp en productos estructurados sin que la IA invente datos ni publique por su cuenta, y evitar reimportar lo mismo cuando el collector reenvía un mensaje. A la vez, la tienda debía cargar rápido y sostener una identidad visual fuerte (neón, mascota, microinteracciones) sin sacrificar el rendimiento, y resolver una autenticación de administración segura sin dejar tokens expuestos en el navegador.',
+
+    role:
+      'Full stack: frontend (Angular, GSAP, Lenis), backend (Django, DRF, JWT), el catálogo de gear y el flujo de importación desde WhatsApp con análisis por IA.',
+
+    keyFeatures: [
+      'Catálogo de gear gamer con categorías, filtros y fichas de producto',
+      'Collector que ingiere las publicaciones de un canal de WhatsApp vía API',
+      'Worker con IA local (Ollama) que propone productos a partir de cada publicación',
+      'Panel de administración propio (productos, categorías, importaciones)',
+      'Frontend Angular con GSAP y scroll suave (Lenis) sobre una estética cyberpunk'
+    ],
+
+    primaryTechnologies: ['Angular', 'Django', 'DRF', 'Ollama', 'GSAP'],
+
+    status: 'in-development',
+
+    technologies: [
+      'Angular', 'TypeScript', 'GSAP', 'Lenis', 'Python', 'Django', 'Django REST Framework',
+      'SimpleJWT', 'SQLite', 'Pillow', 'Ollama', 'WhatsApp', 'Vercel'
+    ],
+
+    features: [
+      'Home con hero animado, sección de servicios, comunidad y contacto',
+      'Catálogo de gear con categorías, filtros y fichas de producto individuales',
+      'Importación de publicaciones desde un canal de WhatsApp (texto e imágenes)',
+      'Deduplicación de publicaciones y media entrantes por huella (sha256)',
+      'Análisis con IA local (Ollama) que sugiere nombre, descripción, categoría y precio',
+      'Revisión y publicación manual del producto antes de que aparezca en la tienda',
+      'Panel de administración con login por JWT (productos, categorías, importaciones)',
+      'Enlaces de compra directos a WhatsApp desde cada ficha de producto',
+      'Scroll suave con Lenis y animaciones con GSAP respetando prefers-reduced-motion'
+    ],
+
+    architecture: {
+      summary:
+        'Un collector externo alimenta a Django con las publicaciones del canal de WhatsApp; el núcleo las guarda, deduplica y expone el catálogo y la administración vía DRF, un worker con IA local solo propone los campos del producto, y un frontend Angular sirve tanto la tienda pública como el panel de administración.',
+      layout: 'stages',
+      nodes: [
+        { id: 'whatsapp', group: 'Fuente de datos', label: 'Canal de WhatsApp', description: 'Un collector externo envía a la API las publicaciones del canal (texto e imágenes).' },
+        { id: 'api', group: 'Núcleo Django · DRF', label: 'API (DRF)', description: 'Expone el catálogo de gear, la autenticación y las publicaciones en bruto.' },
+        { id: 'ingest', group: 'Núcleo Django · DRF', label: 'Ingesta + dedupe', description: 'Guarda cada publicación/media y la deduplica por huella (sha256) para no reimportar lo mismo.' },
+        { id: 'auth', group: 'Núcleo Django · DRF', label: 'Auth JWT', description: 'SimpleJWT en cookies HttpOnly seguras, con interceptor y guard en Angular.' },
+        { id: 'ollama', group: 'IA — propone, no publica', label: 'Worker Ollama (local)', description: 'Lee el texto de las publicaciones elegidas y sugiere los campos del producto; nada se publica sin revisión.' },
+        { id: 'client', group: 'Cliente Angular', label: 'Tienda + Admin', description: 'Frontend Angular (GSAP + Lenis) con la tienda pública y el panel de administración.' }
+      ],
+      connections: [
+        { from: 'Fuente de datos', to: 'Núcleo Django · DRF', label: 'publicaciones vía API' },
+        { from: 'Núcleo Django · DRF', to: 'IA — propone, no publica', label: 'publicaciones elegidas' },
+        { from: 'IA — propone, no publica', to: 'Cliente Angular', label: 'producto sugerido → revisión' }
+      ]
+    },
+
+    decisions: [
+      { title: 'La IA propone, el humano publica', detail: 'El worker de Ollama analiza el texto de la publicación y sugiere los campos del producto, pero nada llega al catálogo sin pasar por el panel. El modelo se define por entorno y el worker se niega a arrancar sin un OLLAMA_MODEL configurado; las sugerencias con poca confianza quedan marcadas en vez de aceptarse a ciegas.' },
+      { title: 'Deduplicación por huella antes de guardar', detail: 'Cada publicación y cada imagen entrante se identifican con un sha256/fingerprint, de modo que si el collector reenvía un mensaje ya visto no se crea un duplicado en las publicaciones en bruto.' },
+      { title: 'JWT en cookies HttpOnly, no en el navegador', detail: 'La sesión de administración usa SimpleJWT guardado en cookies HttpOnly seguras, con un interceptor y un guard en Angular, en lugar de dejar el token accesible desde JavaScript en localStorage.' }
+    ],
+
+    results: [
+      'Frontend desplegado en teterito.vercel.app. El catálogo con importación desde WhatsApp y análisis por IA está en desarrollo activo.'
+    ],
+
+    image: '/teterito-inicio.jpg',
+    imageAlt: 'Hero de Teterito Reborn con el lema “Donde el gaming nace” y la mascota, un gato sphynx gamer con cascos',
+
+    gallery: [
+      { number: '01', label: 'Inicio', src: '/teterito-inicio.jpg', alt: 'Hero de Teterito Reborn con el lema “Donde el gaming nace” y la mascota, un gato sphynx gamer' },
+      { number: '02', label: 'Servicios', src: '/teterito-servicios.jpg', alt: 'Sección de servicios web y branding de Teterito Reborn con tarjetas de catálogos, landing pages e identidad visual' },
+      { number: '03', label: 'Sobre la marca', src: '/teterito-nosotros.jpg', alt: 'Sección “Más que una tienda” de Teterito Reborn con los pilares gaming, diseño, desarrollo y comunidad' },
+      { number: '04', label: 'Comunidad', src: '/teterito-comunidad.jpg', alt: 'Sección de comunidad y redes de Teterito Reborn con enlaces a TikTok e Instagram' }
+    ],
+
+    links: [
+      { label: 'Ver proyecto', url: 'https://teterito.vercel.app/', type: 'live' }
+    ]
   }
 ];
 
@@ -650,6 +740,96 @@ export const PROJECTS_EN: PortfolioProject[] = [
     ],
 
     links: []
+  },
+  {
+    slug: 'teterito',
+    number: '05',
+    title: 'Teterito Reborn',
+    category: 'Gaming storefront · AI-powered catalog',
+
+    summary:
+      'Gaming store and community with a gear catalog, web design services and its own cyberpunk identity. The catalog is fed by posts from a WhatsApp channel that an AI model turns into product listings.',
+
+    description:
+      'Full stack platform for Teterito Reborn, a brand that blends gaming, gear sales and web design. The frontend is an Angular app with a cyberpunk aesthetic, smooth scrolling (Lenis) and GSAP animations, built around its own mascot. The Django backend exposes the catalog, authentication and a custom admin panel. The distinctive part is the catalog flow: an external collector sends the posts from a WhatsApp channel (text and images) to the API, where they’re stored as raw posts and deduplicated by fingerprint; from the panel, the admin picks which ones to analyze and a local AI worker (Ollama) reads them to propose a product’s fields —name, description, category, price— which are only then reviewed and published.',
+
+    challenge:
+      'Turning informal posts from a WhatsApp channel into structured products without the AI inventing data or publishing on its own, and avoiding re-importing the same thing when the collector resends a message. At the same time, the store had to load fast and hold a strong visual identity (neon, mascot, micro-interactions) without sacrificing performance, and solve secure admin authentication without leaving tokens exposed in the browser.',
+
+    role:
+      'Full stack: frontend (Angular, GSAP, Lenis), backend (Django, DRF, JWT), the gear catalog and the WhatsApp import flow with AI analysis.',
+
+    keyFeatures: [
+      'Gaming gear catalog with categories, filters and product detail pages',
+      'Collector that ingests a WhatsApp channel’s posts via API',
+      'Local AI worker (Ollama) that proposes products from each post',
+      'Custom admin panel (products, categories, imports)',
+      'Angular frontend with GSAP and smooth scrolling (Lenis) over a cyberpunk aesthetic'
+    ],
+
+    primaryTechnologies: ['Angular', 'Django', 'DRF', 'Ollama', 'GSAP'],
+
+    status: 'in-development',
+
+    technologies: [
+      'Angular', 'TypeScript', 'GSAP', 'Lenis', 'Python', 'Django', 'Django REST Framework',
+      'SimpleJWT', 'SQLite', 'Pillow', 'Ollama', 'WhatsApp', 'Vercel'
+    ],
+
+    features: [
+      'Home with animated hero, services, community and contact sections',
+      'Gear catalog with categories, filters and individual product pages',
+      'Importing posts from a WhatsApp channel (text and images)',
+      'Deduplication of incoming posts and media by fingerprint (sha256)',
+      'Local AI analysis (Ollama) that suggests name, description, category and price',
+      'Manual review and publishing of the product before it appears in the store',
+      'Admin panel with JWT login (products, categories, imports)',
+      'Direct WhatsApp buy links from each product page',
+      'Smooth scrolling with Lenis and GSAP animations respecting prefers-reduced-motion'
+    ],
+
+    architecture: {
+      summary:
+        'An external collector feeds Django with the WhatsApp channel’s posts; the core stores and deduplicates them and exposes the catalog and admin via DRF, a local AI worker only proposes the product’s fields, and an Angular frontend serves both the public store and the admin panel.',
+      layout: 'stages',
+      nodes: [
+        { id: 'whatsapp', group: 'Data source', label: 'WhatsApp channel', description: 'An external collector sends the channel’s posts (text and images) to the API.' },
+        { id: 'api', group: 'Django core · DRF', label: 'API (DRF)', description: 'Exposes the gear catalog, authentication and the raw posts.' },
+        { id: 'ingest', group: 'Django core · DRF', label: 'Ingest + dedupe', description: 'Stores each post/media and deduplicates it by fingerprint (sha256) to avoid re-importing the same thing.' },
+        { id: 'auth', group: 'Django core · DRF', label: 'JWT auth', description: 'SimpleJWT in secure HttpOnly cookies, with an interceptor and guard in Angular.' },
+        { id: 'ollama', group: 'AI — proposes, doesn’t publish', label: 'Ollama worker (local)', description: 'Reads the text of the chosen posts and suggests the product’s fields; nothing is published without review.' },
+        { id: 'client', group: 'Angular client', label: 'Store + Admin', description: 'Angular frontend (GSAP + Lenis) with the public store and the admin panel.' }
+      ],
+      connections: [
+        { from: 'Data source', to: 'Django core · DRF', label: 'posts via API' },
+        { from: 'Django core · DRF', to: 'AI — proposes, doesn’t publish', label: 'chosen posts' },
+        { from: 'AI — proposes, doesn’t publish', to: 'Angular client', label: 'suggested product → review' }
+      ]
+    },
+
+    decisions: [
+      { title: 'The AI proposes, the human publishes', detail: 'The Ollama worker analyzes the post’s text and suggests the product’s fields, but nothing reaches the catalog without going through the panel. The model is defined by environment and the worker refuses to start without an OLLAMA_MODEL configured; low-confidence suggestions are flagged instead of being accepted blindly.' },
+      { title: 'Fingerprint deduplication before storing', detail: 'Every incoming post and image is identified with a sha256/fingerprint, so if the collector resends an already-seen message no duplicate is created in the raw posts.' },
+      { title: 'JWT in HttpOnly cookies, not in the browser', detail: 'The admin session uses SimpleJWT stored in secure HttpOnly cookies, with an interceptor and a guard in Angular, instead of leaving the token accessible from JavaScript in localStorage.' }
+    ],
+
+    results: [
+      'Frontend deployed at teterito.vercel.app. The catalog with WhatsApp import and AI analysis is under active development.'
+    ],
+
+    image: '/teterito-inicio.jpg',
+    imageAlt: 'Teterito Reborn hero with the tagline “Donde el gaming nace” and the mascot, a gamer sphynx cat wearing headphones',
+
+    gallery: [
+      { number: '01', label: 'Home', src: '/teterito-inicio.jpg', alt: 'Teterito Reborn hero with the tagline “Donde el gaming nace” and the mascot, a gamer sphynx cat' },
+      { number: '02', label: 'Services', src: '/teterito-servicios.jpg', alt: 'Teterito Reborn web & branding services section with cards for catalogs, landing pages and visual identity' },
+      { number: '03', label: 'About the brand', src: '/teterito-nosotros.jpg', alt: 'Teterito Reborn “More than a store” section with the gaming, design, development and community pillars' },
+      { number: '04', label: 'Community', src: '/teterito-comunidad.jpg', alt: 'Teterito Reborn community and social section with links to TikTok and Instagram' }
+    ],
+
+    links: [
+      { label: 'View project', url: 'https://teterito.vercel.app/', type: 'live' }
+    ]
   }
 ];
 

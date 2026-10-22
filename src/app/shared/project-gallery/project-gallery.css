@@ -261,71 +261,119 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* Lightbox */
-.lightbox-overlay {
+/* ==========================================================================
+   Lightbox — visor a pantalla completa estilo iOS.
+   El contenedor ocupa todo el viewport (100dvh para respetar la barra del
+   navegador móvil), con zonas seguras (notch) y gestos táctiles: deslizar en
+   horizontal pasa de foto y deslizar hacia abajo cierra.
+   ========================================================================== */
+.lightbox {
   position: fixed;
   inset: 0;
-  z-index: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background: rgba(10, 10, 10, 0.82);
-  backdrop-filter: blur(10px);
-}
-
-.lightbox-panel {
-  position: relative;
+  z-index: 1300;
   display: flex;
   flex-direction: column;
-  width: min(100%, 1100px);
-  max-height: 90vh;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background: var(--dark);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 1.5rem;
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(8, 8, 10, 0.92);
+  backdrop-filter: blur(16px);
+  cursor: zoom-out;
 }
 
 .lightbox-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 4;
-  width: 42px;
-  height: 42px;
+  top: calc(env(safe-area-inset-top, 0px) + 0.85rem);
+  right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+  z-index: 5;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 50%;
+  backdrop-filter: blur(14px);
   cursor: pointer;
   transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
-.lightbox-close:hover {
+.lightbox-close:hover,
+.lightbox-close:focus-visible {
   color: var(--dark);
   background: var(--accent);
   transform: scale(1.06);
 }
 
-.lightbox-stage {
+.lightbox-close:active {
+  transform: scale(0.94);
+}
+
+.lightbox-pill {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  padding: 0.42rem 0.8rem;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  backdrop-filter: blur(14px);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.lightbox-viewport {
   position: relative;
-  display: flex;
+  z-index: 2;
   flex: 1;
+  min-height: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  background: #0a0a0a;
+  padding: calc(env(safe-area-inset-top, 0px) + 3.6rem) 1rem 0.5rem;
+  touch-action: none;
+}
+
+.lightbox-figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  will-change: transform, opacity;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox-viewport.is-dragging .lightbox-figure {
+  transition: none;
 }
 
 .lightbox-image {
   display: block;
-  width: auto;
   max-width: 100%;
-  max-height: calc(90vh - 96px);
+  max-height: 100%;
   object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 .lightbox-nav {
@@ -337,18 +385,24 @@
   display: grid;
   place-items: center;
   color: #ffffff;
-  background: rgba(17, 17, 17, 0.72);
+  background: rgba(17, 17, 17, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 50%;
+  backdrop-filter: blur(12px);
   cursor: pointer;
   transform: translateY(-50%);
-  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease, opacity 180ms ease;
 }
 
 .lightbox-nav:hover {
   color: var(--dark);
   background: var(--accent);
   transform: translateY(-50%) scale(1.06);
+}
+
+.lightbox-nav span {
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .lightbox-nav-prev {
@@ -359,28 +413,29 @@
   right: 1rem;
 }
 
-.lightbox-footer {
+.lightbox-chrome {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 1.4rem;
-  background: var(--dark);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.1rem calc(env(safe-area-inset-bottom, 0px) + 1rem);
 }
 
 .lightbox-caption {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.55rem;
   align-items: center;
   min-width: 0;
   color: var(--dark-text);
 }
 
 .lightbox-caption span {
+  flex-shrink: 0;
   padding: 0.3rem 0.55rem;
-  color: rgba(247, 247, 242, 0.6);
-  background: rgba(255, 255, 255, 0.08);
+  color: rgba(247, 247, 242, 0.65);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -388,6 +443,7 @@
 
 .lightbox-caption strong {
   overflow: hidden;
+  color: #ffffff;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -395,20 +451,34 @@
   white-space: nowrap;
 }
 
-.lightbox-counter {
+.lightbox-dots {
   display: flex;
   flex-shrink: 0;
-  gap: 0.4rem;
+  gap: 0.5rem;
   align-items: center;
-  color: rgba(247, 247, 242, 0.7);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
 }
 
-.lightbox-counter i {
-  width: 12px;
-  height: 1px;
-  background: rgba(247, 247, 242, 0.4);
+.lightbox-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.32);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: width 260ms ease, background 260ms ease;
+}
+
+.lightbox-dots button.is-active {
+  width: 24px;
+  background: var(--accent, #d7ff3f);
+}
+
+/* En pantallas táctiles el gesto sustituye a las flechas. */
+@media (hover: none) and (pointer: coarse) {
+  .lightbox-nav {
+    display: none;
+  }
 }
 
 @media (max-width: 800px) {
@@ -479,14 +549,13 @@
   .project-gallery-dots button.is-active {
     width: 20px;
   }
-  .lightbox-overlay {
-    padding: 0.75rem;
+  .lightbox-viewport {
+    padding: calc(env(safe-area-inset-top, 0px) + 3.4rem) 0.6rem 0.4rem;
   }
-  .lightbox-nav {
-    width: 40px;
-    height: 40px;
+  .lightbox-image {
+    border-radius: 14px;
   }
   .lightbox-caption strong {
-    max-width: 40vw;
+    max-width: 48vw;
   }
 }

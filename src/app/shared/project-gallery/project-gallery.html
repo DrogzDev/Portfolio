@@ -19,7 +19,7 @@
           type="button"
           class="project-media-frame"
           [attr.aria-label]="content().gallery.viewLarge(image.label)"
-          (click)="openLightbox(imageIndex)"
+          (click)="openLightbox(imageIndex, $event)"
         >
           <img [src]="image.src" [alt]="image.alt" loading="lazy" width="1600" height="1000" />
           <span class="project-media-zoom-hint" aria-hidden="true">⤢</span>
@@ -72,57 +72,92 @@
 
 @if (lightboxOpen()) {
   <div
-    class="lightbox-overlay"
+    class="lightbox"
     role="dialog"
     aria-modal="true"
+    tabindex="-1"
     [attr.aria-label]="content().gallery.lightboxAriaLabel(title())"
-    (click)="closeLightbox()"
   >
-    <div class="lightbox-panel" tabindex="-1" (click)="$event.stopPropagation()">
-      <button type="button" class="lightbox-close" [attr.aria-label]="content().gallery.close" (click)="closeLightbox()">
-        <span aria-hidden="true">✕</span>
-      </button>
+    <div class="lightbox-backdrop" (click)="closeLightbox()"></div>
 
-      <div class="lightbox-stage">
-        @if (images().length > 1) {
-          <button
-            type="button"
-            class="lightbox-nav lightbox-nav-prev"
-            [attr.aria-label]="content().gallery.previousImageShort"
-            (click)="lightboxPrevious()"
-          >
-            <span aria-hidden="true">←</span>
-          </button>
-        }
+    <button
+      type="button"
+      class="lightbox-close"
+      [attr.aria-label]="content().gallery.close"
+      (click)="closeLightbox()"
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+           stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
 
-        <img class="lightbox-image" [src]="images()[lightboxIndex()].src" [alt]="images()[lightboxIndex()].alt" />
+    @if (images().length > 1) {
+      <div class="lightbox-pill" aria-hidden="true">
+        {{ lightboxIndex() + 1 }} / {{ images().length }}
+      </div>
+    }
 
-        @if (images().length > 1) {
-          <button
-            type="button"
-            class="lightbox-nav lightbox-nav-next"
-            [attr.aria-label]="content().gallery.nextImageShort"
-            (click)="lightboxNext()"
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        }
+    <div
+      class="lightbox-viewport"
+      [class.is-dragging]="dragging()"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp($event)"
+      (pointercancel)="onPointerUp($event)"
+      (click)="onViewportClick($event)"
+    >
+      @if (images().length > 1) {
+        <button
+          type="button"
+          class="lightbox-nav lightbox-nav-prev"
+          [attr.aria-label]="content().gallery.previousImageShort"
+          (click)="lightboxPrevious()"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+      }
+
+      <figure class="lightbox-figure">
+        <img
+          class="lightbox-image"
+          draggable="false"
+          [src]="images()[lightboxIndex()].src"
+          [alt]="images()[lightboxIndex()].alt"
+        />
+      </figure>
+
+      @if (images().length > 1) {
+        <button
+          type="button"
+          class="lightbox-nav lightbox-nav-next"
+          [attr.aria-label]="content().gallery.nextImageShort"
+          (click)="lightboxNext()"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      }
+    </div>
+
+    <div class="lightbox-chrome">
+      <div class="lightbox-caption">
+        <span>{{ images()[lightboxIndex()].number }}</span>
+        <strong>{{ images()[lightboxIndex()].label }}</strong>
       </div>
 
-      <div class="lightbox-footer">
-        <div class="lightbox-caption">
-          <span>{{ images()[lightboxIndex()].number }}</span>
-          <strong>{{ images()[lightboxIndex()].label }}</strong>
+      @if (images().length > 1) {
+        <div class="lightbox-dots" [attr.aria-label]="content().gallery.selectImageAriaLabel">
+          @for (image of images(); track image.src; let imageIndex = $index) {
+            <button
+              type="button"
+              [class.is-active]="imageIndex === lightboxIndex()"
+              [attr.aria-label]="content().gallery.showImage(image.label)"
+              [attr.aria-current]="imageIndex === lightboxIndex() ? 'true' : null"
+              (click)="goToLightbox(imageIndex)"
+            ></button>
+          }
         </div>
-
-        @if (images().length > 1) {
-          <div class="lightbox-counter" aria-live="polite">
-            <span>{{ lightboxIndex() + 1 }}</span>
-            <i aria-hidden="true"></i>
-            <span>{{ images().length }}</span>
-          </div>
-        }
-      </div>
+      }
     </div>
   </div>
 }

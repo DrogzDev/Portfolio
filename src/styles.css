@@ -95,6 +95,13 @@ html.lightbox-open body {
   overflow: hidden;
 }
 
+/* El selector de idioma es `position: fixed` en la esquina superior derecha y
+   tapaba el botón de cerrar del visor. Se oculta mientras el lightbox está
+   abierto (no tiene sentido cambiar de idioma viendo una foto). */
+html.lightbox-open app-language-switcher {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
